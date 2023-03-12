@@ -1,0 +1,17 @@
+/data
+/media
+/static
+/razomvenv
+*.sqlite3
+*.py[cod]
+*.sw[a-z]
+*.un~
+*.log
+*.yaml
+*.env
+.idea
+.bash_profile
+.DS_Store
+.env
+*.pem
+.pem

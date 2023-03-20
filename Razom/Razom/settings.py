@@ -108,6 +108,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+MEDIA_URL = "/media/"
+
 STATIC_ROOT = env("STATIC_ROOT")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -115,3 +117,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "assets"),
 ]
+
+TOKEN = env("TOKEN")
+
+API_URL = env("API_URL")

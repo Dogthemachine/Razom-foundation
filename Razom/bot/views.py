@@ -16,4 +16,4 @@ class BasicBotView(View):
             update = telebot.types.Update.de_json(request.body.decode('utf-8'))
             bot.process_new_updates([update])
 
-        return HttpResponse('<h1>Вітаємо у We Care Ukraine!</h1>')
+        return HttpResponse('<h1>Слава Україні!</h1>')

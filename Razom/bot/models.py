@@ -30,22 +30,18 @@ class Address(models.Model):
     apartment = models.IntegerField(blank=True, null=True)
 
 
+class Categories(models.Model):
+    name = models.CharField(max_length=70, default="")
+
+
 class Requests(models.Model):
-    category = ForeignKey(Categories, on_delete=models.CASCADE)
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     priority = models.CharField(max_length=70, default="")      #   high / normal / low
     added = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=2000, default="")
     photo = models.ImageField(upload_to="requests_images/", blank=True)
     regular = models.BooleanField(default=False)
     status = models.CharField(max_length=70, default="")        #   created / approved / gathered / done / declined
-
-
-class Feedbacks(models.Model):
-    request = ForeignKey(Requests, on_delete=models.CASCADE)
-    volunteer = ForeignKey(Volunteers, on_delete=models.CASCADE)
-    comment = models.CharField(max_length=2000, default="")
-    photo = models.ImageField(upload_to="feedback_images/", blank=True)
-    range = models.CharField(max_length=70, default="")
 
 
 class Volunteers(models.Model):
@@ -56,5 +52,9 @@ class Volunteers(models.Model):
     email = models.EmailField(max_length=200, null=True, blank=True)
 
 
-class Categories(models.Model):
-    name = models.CharField(max_length=70, default="")
+class Feedbacks(models.Model):
+    request = models.ForeignKey(Requests, on_delete=models.CASCADE)
+    volunteer = models.ForeignKey(Volunteers, on_delete=models.CASCADE)
+    comment = models.CharField(max_length=2000, default="")
+    photo = models.ImageField(upload_to="feedback_images/", blank=True)
+    range = models.CharField(max_length=70, default="")

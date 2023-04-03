@@ -1,9 +1,10 @@
 from django.views import View
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
-from thepage.models import Recipients, Volunteers, Feedbacks, Requests, Categories, Address
+from bot.models import Recipients, Volunteers, Feedbacks, Requests, Categories, Address
 
 import environ
+import telebot
 
 env = environ.Env()
 environ.Env.read_env()

@@ -120,4 +120,4 @@ STATICFILES_DIRS = [
 
 TOKEN = env("TOKEN")
 
-API_URL = env("API_URL")
+

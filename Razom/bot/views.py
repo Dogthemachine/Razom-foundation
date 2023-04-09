@@ -12,7 +12,6 @@ from datetime import datetime
 env = environ.Env()
 environ.Env.read_env()
 telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
-now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # class BasicBotView(View):
 #     def get(self, request):
@@ -34,33 +33,40 @@ now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 #
 #     bot.infinity_polling()
 
-
-def telegram_webhook(request):
+class BasicBotView(View):
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 
     with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
         file.write(f"{now}: In the BasicBotView but before post function\n")
+        file.write(settings.TOKEN)
 
-    if request.method == "POST" and request.content_type == "application/json":
-        try:
-            json_string = request.body.decode("utf-8")
-            update = telebot.types.Update.de_json(json_string)
-        except:
+    def post(request):
+
+        with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
+            file.write(f"{now}: In the post function before: if request.method == POST\n")
+
+        if request.method == "POST" and request.content_type == "application/json":
+            try:
+                json_string = request.body.decode("utf-8")
+                update = telebot.types.Update.de_json(json_string)
+            except:
+                return HttpResponse(status=403)
+            if update.message and update.message.text:
+                telegram_bot.process_new_messages([update.message])
+
+            with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
+                file.write(f"{now}: Status=200\n")
+
+            return HttpResponse(status=200)
+        else:
+
+            with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
+                file.write(f"{now}: status=403\n")
+
             return HttpResponse(status=403)
-        if update.message and update.message.text:
-            telegram_bot.process_new_messages([update.message])
-
-        with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
-            file.write(f"{now}: Status=200\n")
-
-        return HttpResponse(status=200)
-    else:
-
-        with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
-            file.write(f"{now}: status=403\n")
-
-        return HttpResponse(status=403)
 
 
-@telegram_bot.message_handler(commands=["help", "start"])
-def telegram_welcome(message):
-    telegram_bot.send_message(message.chat.id, "Слава Україні!")
+    @telegram_bot.message_handler(commands=["help", "start"])
+    def telegram_welcome(message):
+        telegram_bot.send_message(message.chat.id, "Слава Україні!")

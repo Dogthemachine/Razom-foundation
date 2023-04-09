@@ -9,29 +9,7 @@ import telebot
 
 env = environ.Env()
 environ.Env.read_env()
-tbot = telebot.AsyncTeleBot(settings.TOKEN)
-
-@csrf_exempt
-class BasicBotView(View):
-    def get(self, request):
-        if request.META['CONTENT_TYPE'] == 'application/json':
-
-            json_data = request.body.decode('utf-8')
-            update = telebot.types.Update.de_json(json_data)
-            tbot.process_new_updates([update])
-
-            return HttpResponse("")
-
-        else:
-            raise PermissionDenied
-
-
-@tbot.message_handler(commands=['start'])
-def greet(m):
-    tbot.send_message(m.chat.id, "Hello")
-
-
-
+bot = telebot.AsyncTeleBot(settings.TOKEN)
 
 # class BasicBotView(View):
 #     def get(self, request):
@@ -40,3 +18,16 @@ def greet(m):
 #             request,
 #             "page.html", {},
 #         )
+
+
+
+class BasicBotView(View):
+    @bot.message_handler(commands=['start', 'help'])
+    def send_welcome(message):
+        bot.reply_to(message, "Howdy, how are you doing?")
+
+    @bot.message_handler(func=lambda message: True)
+    def echo_all(message):
+        bot.reply_to(message, message.text)
+
+    bot.infinity_polling()

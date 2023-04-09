@@ -41,7 +41,7 @@ class BasicBotView(View):
         file.write(f"{now}: In the BasicBotView but before post function\n")
         file.write(settings.TOKEN)
 
-    def post(request):
+    def post(self, request):
 
         with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
             file.write(f"{now}: In the post function before: if request.method == POST\n")

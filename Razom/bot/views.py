@@ -9,8 +9,7 @@ import telebot
 
 env = environ.Env()
 environ.Env.read_env()
-bot = telebot.TeleBot(settings.TOKEN)
-
+tbot = telebot.AsyncTeleBot(settings.TOKEN)
 
 @csrf_exempt
 class BasicBotView(View):

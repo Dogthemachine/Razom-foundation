@@ -36,12 +36,12 @@ telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 class BasicBotView(View):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    with open(settings.MEDIA_ROOT + "/log.txt", 'a') as file:
+    with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
         file.write(f"{now}: In the BasicBotView but before post function\n")
 
     def post(request):
 
-        with open(settings.MEDIA_ROOT + "/log.txt", 'a') as file:
+        with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
             file.write(f"{now}: In the post function before: if request.method == POST\n")
 
         if request.method == "POST" and request.content_type == "application/json":
@@ -53,13 +53,13 @@ class BasicBotView(View):
             if update.message and update.message.text:
                 telegram_bot.process_new_messages([update.message])
 
-            with open(settings.MEDIA_ROOT + "/log.txt", 'a') as file:
+            with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
                 file.write(f"{now}: Status=200\n")
-                
+
             return HttpResponse(status=200)
         else:
 
-            with open(settings.MEDIA_ROOT + "/log.txt", 'a') as file:
+            with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
                 file.write(f"{now}: status=403\n")
 
             return HttpResponse(status=403)

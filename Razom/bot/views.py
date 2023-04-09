@@ -44,7 +44,7 @@ class BasicBotView(View):
     def post(self, request):
 
         with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
-            file.write(f"{now}: In the post function before: if request.method == POST\n")
+            file.write("In the post function before: if request.method == POST\n")
 
         if request.method == "POST" and request.content_type == "application/json":
             try:

@@ -32,6 +32,8 @@ telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 #     bot.infinity_polling()
 
 class BasicBotView(View):
+    with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
+        file.write("Before post")
     def post(request):
         if request.method == "POST" and request.content_type == "application/json":
             try:
@@ -42,13 +44,11 @@ class BasicBotView(View):
             if update.message and update.message.text:
                 telegram_bot.process_new_messages([update.message])
             with open(settings.MEDIA_ROOT + "/log200.txt", 'w') as file:
-                # Write some text to the file
                 file.write(update.message)
                 file.write(request)
             return HttpResponse(status=200)
         else:
             with open(settings.MEDIA_ROOT + "/log403.txt", 'w') as file:
-                # Write some text to the file
                 file.write("status=403")
             return HttpResponse(status=403)
 

@@ -5,6 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 app_name = "thepage"
 
 urlpatterns = [
-    path("", csrf_exempt(views.BasicBotView.as_view()), name="bot"),
-    # path("", BasicBotView, name="bot"),
+    # path("", csrf_exempt(views.BasicBotView.as_view()), name="bot"),
+    path("", views.BasicBotView, name="bot"),
 ]

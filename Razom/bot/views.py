@@ -31,19 +31,19 @@ telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 #
 #     bot.infinity_polling()
 
-
-def BasicBotView(request):
-    if request.method == "POST" and request.content_type == "application/json":
-        try:
-            json_string = request.body.decode("utf-8")
-            update = telebot.types.Update.de_json(json_string)
-        except:
+class BasicBotView(View):
+    def post(request):
+        if request.method == "POST" and request.content_type == "application/json":
+            try:
+                json_string = request.body.decode("utf-8")
+                update = telebot.types.Update.de_json(json_string)
+            except:
+                return HttpResponse(status=403)
+            if update.message and update.message.text:
+                telegram_bot.process_new_messages([update.message])
+            return HttpResponse(status=200)
+        else:
             return HttpResponse(status=403)
-        if update.message and update.message.text:
-            telegram_bot.process_new_messages([update.message])
-        return HttpResponse(status=200)
-    else:
-        return HttpResponse(status=403)
 
 
 @telegram_bot.message_handler(commands=["help", "start"])

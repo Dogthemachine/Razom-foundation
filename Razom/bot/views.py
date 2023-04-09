@@ -33,11 +33,6 @@ telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 
 class BasicBotView(View):
     def post(request):
-        
-        print("\n\n\n")
-        print("THIS IS THE TEST PRINT")
-        print("\n\n\n")
-
         if request.method == "POST" and request.content_type == "application/json":
             try:
                 json_string = request.body.decode("utf-8")
@@ -46,8 +41,15 @@ class BasicBotView(View):
                 return HttpResponse(status=403)
             if update.message and update.message.text:
                 telegram_bot.process_new_messages([update.message])
+            with open(settings.MEDIA_ROOT + "/log200.txt", 'w') as file:
+                # Write some text to the file
+                file.write(update.message)
+                file.write(request)
             return HttpResponse(status=200)
         else:
+            with open(settings.MEDIA_ROOT + "/log403.txt", 'w') as file:
+                # Write some text to the file
+                file.write("status=403")
             return HttpResponse(status=403)
 
 

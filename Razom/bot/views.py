@@ -33,6 +33,11 @@ telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 
 class BasicBotView(View):
     def post(request):
+        
+        print("\n\n\n")
+        print("THIS IS THE TEST PRINT")
+        print("\n\n\n")
+
         if request.method == "POST" and request.content_type == "application/json":
             try:
                 json_string = request.body.decode("utf-8")

@@ -35,9 +35,11 @@ telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 
 class BasicBotView(View):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 
     with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
         file.write(f"{now}: In the BasicBotView but before post function\n")
+        file.write(settings.TOKEN)
 
     def post(request):
 

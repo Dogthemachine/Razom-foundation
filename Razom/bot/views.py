@@ -46,6 +46,6 @@ class BasicBotView(View):
             return HttpResponse(status=403)
 
 
-@telegram_bot.message_handler(commands=["help", "start"])
-def telegram_welcome(message):
-    telegram_bot.send_message(message.chat.id, "Слава Україні!")
+    @telegram_bot.message_handler(commands=["help", "start"])
+    def telegram_welcome(message):
+        telegram_bot.send_message(message.chat.id, "Слава Україні!")

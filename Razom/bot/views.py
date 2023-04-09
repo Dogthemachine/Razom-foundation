@@ -20,11 +20,11 @@ bot = telebot.AsyncTeleBot(settings.TOKEN)
 #         )
 
 
-
+@csrf_exempt
 class BasicBotView(View):
     @bot.message_handler(commands=['start', 'help'])
     def send_welcome(message):
-        bot.reply_to(message, "Howdy, how are you doing?")
+        bot.reply_to(message, "Слава Україні!")
 
     @bot.message_handler(func=lambda message: True)
     def echo_all(message):

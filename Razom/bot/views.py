@@ -12,6 +12,7 @@ from datetime import datetime
 env = environ.Env()
 environ.Env.read_env()
 telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
+now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # class BasicBotView(View):
 #     def get(self, request):
@@ -34,13 +35,10 @@ telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 #     bot.infinity_polling()
 
 
-def BasicBotView(request):
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
+def telegram_webhook(request):
 
     with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
         file.write(f"{now}: In the BasicBotView but before post function\n")
-        file.write(settings.TOKEN)
 
     if request.method == "POST" and request.content_type == "application/json":
         try:

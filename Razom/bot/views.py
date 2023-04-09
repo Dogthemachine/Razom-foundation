@@ -10,10 +10,20 @@ env = environ.Env()
 environ.Env.read_env()
 bot = telebot.TeleBot(settings.TOKEN)
 
+# class BasicBotView(View):
+#     def get(self, request):
+#         if request.method == "POST":
+#             update = telebot.types.Update.de_json(request.body.decode('utf-8'))
+#             bot.process_new_updates([update])
+#
+#         return HttpResponse('<h1>Слава Україні!</h1>')
+
+
+
 class BasicBotView(View):
     def get(self, request):
-        if request.method == "POST":
-            update = telebot.types.Update.de_json(request.body.decode('utf-8'))
-            bot.process_new_updates([update])
 
-        return HttpResponse('<h1>Слава Україні!</h1>')
+        return render(
+            request,
+            "page.html", {},
+        )

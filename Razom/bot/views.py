@@ -6,6 +6,8 @@ from bot.models import Recipients, Volunteers, Feedbacks, Requests, Categories, 
 
 import environ
 import telebot
+from datetime import datetime
+
 
 env = environ.Env()
 environ.Env.read_env()
@@ -32,9 +34,16 @@ telegram_bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 #     bot.infinity_polling()
 
 class BasicBotView(View):
-    with open(settings.MEDIA_ROOT + "/log.txt", 'w') as file:
-        file.write("Before post")
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    with open(settings.MEDIA_ROOT + "/log.txt", 'a') as file:
+        file.write(f"{now}: In the BasicBotView but before post function\n")
+
     def post(request):
+
+        with open(settings.MEDIA_ROOT + "/log.txt", 'a') as file:
+            file.write(f"{now}: In the post function before: if request.method == POST\n")
+
         if request.method == "POST" and request.content_type == "application/json":
             try:
                 json_string = request.body.decode("utf-8")
@@ -43,13 +52,16 @@ class BasicBotView(View):
                 return HttpResponse(status=403)
             if update.message and update.message.text:
                 telegram_bot.process_new_messages([update.message])
-            with open(settings.MEDIA_ROOT + "/log200.txt", 'w') as file:
-                file.write(update.message)
-                file.write(request)
+
+            with open(settings.MEDIA_ROOT + "/log.txt", 'a') as file:
+                file.write(f"{now}: Status=200\n")
+                
             return HttpResponse(status=200)
         else:
-            with open(settings.MEDIA_ROOT + "/log403.txt", 'w') as file:
-                file.write("status=403")
+
+            with open(settings.MEDIA_ROOT + "/log.txt", 'a') as file:
+                file.write(f"{now}: status=403\n")
+
             return HttpResponse(status=403)
 
 

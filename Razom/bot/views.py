@@ -11,7 +11,7 @@ env = environ.Env()
 environ.Env.read_env()
 bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 
-
+print("\n\n", "START VIEW", "\n\n")
 
 def BasicBotView(self, request):
     print("\n\n", "TEST", "\n\n")

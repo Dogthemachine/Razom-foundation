@@ -6,6 +6,7 @@ from bot.models import Recipients, Volunteers, Feedbacks, Requests, Categories, 
 import environ
 import telebot
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
 
 env = environ.Env()
 environ.Env.read_env()
@@ -13,6 +14,8 @@ bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 
 print("\n\n", "START VIEW", "\n\n")
 
+
+@csrf_exempt
 def BasicBotView(self, request):
     print("\n\n", "TEST", "\n\n")
     if request.method == "POST" and request.content_type == "application/json":

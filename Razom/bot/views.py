@@ -33,9 +33,9 @@ def BasicBotView(request):
 
 @bot.message_handler(commands=["help", "start"])
 def telegram_welcome(message):
-    telegram_bot.send_message(message.chat.id, "Слава Україні!")
+    bot.send_message(message.chat.id, "Слава Україні!")
 
 
 @bot.message_handler(commands=["Героям слава!"])
 def telegram_welcome(message):
-    telegram_bot.send_message(message.chat.id, "Русні пізда")
+    bot.send_message(message.chat.id, "Русні пізда")

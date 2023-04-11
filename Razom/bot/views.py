@@ -16,7 +16,7 @@ print("\n\n", "START VIEW", "\n\n")
 
 
 @csrf_exempt
-def BasicBotView(self, request):
+def BasicBotView(request):
     print("\n\n", "TEST", "\n\n")
     if request.method == "POST" and request.content_type == "application/json":
         try:

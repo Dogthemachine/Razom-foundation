@@ -12,6 +12,13 @@ class Recipients(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     disabilities = models.BooleanField(default=False)
 
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Recipients"
+        verbose_name_plural = "Recipients"
+
 
 class Relatives(models.Model):
     recipient = models.ForeignKey(Recipients, on_delete=models.CASCADE)
@@ -19,6 +26,13 @@ class Relatives(models.Model):
     surname = models.CharField(max_length=30, default="")
     disabilities = disabilities = models.BooleanField(default=False)
     date_of_birth = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Relatives"
+        verbose_name_plural = "Relatives"
 
 
 class Address(models.Model):
@@ -29,9 +43,23 @@ class Address(models.Model):
     building = models.IntegerField(blank=True, null=True)
     apartment = models.IntegerField(blank=True, null=True)
 
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Address"
+        verbose_name_plural = "Address"
+
 
 class Categories(models.Model):
     name = models.CharField(max_length=70, default="")
+
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Categories"
+        verbose_name_plural = "Categories"
 
 
 class Requests(models.Model):
@@ -43,6 +71,13 @@ class Requests(models.Model):
     regular = models.BooleanField(default=False)
     status = models.CharField(max_length=70, default="")        #   created / approved / gathered / done / declined
 
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Requests"
+        verbose_name_plural = "Requests"
+
 
 class Volunteers(models.Model):
     login_name = models.CharField(max_length=30, default="")
@@ -51,6 +86,13 @@ class Volunteers(models.Model):
     phone_number = models.CharField(max_length=70, default="")
     email = models.EmailField(max_length=200, null=True, blank=True)
 
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Volunteers"
+        verbose_name_plural = "Volunteers"
+
 
 class Feedbacks(models.Model):
     request = models.ForeignKey(Requests, on_delete=models.CASCADE)
@@ -58,3 +100,42 @@ class Feedbacks(models.Model):
     comment = models.CharField(max_length=2000, default="")
     photo = models.ImageField(upload_to="feedback_images/", blank=True)
     range = models.CharField(max_length=70, default="")
+
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Feedbacks"
+        verbose_name_plural = "Feedbacks"
+
+
+class Messages(models.Model):
+    welcome_message = models.TextField(default="")
+    call_for_registration_message = models.TextField(default="")
+    choice_message = models.TextField(default="")
+    deletion_message = models.TextField(default="")
+    call_for_phone_message = models.TextField(default="")
+    call_for_name_surname_fathersname_message = models.TextField(default="")
+    call_for_bday_message = models.TextField(default="")
+    call_for_address_message = models.TextField(default="")
+    call_for_email_message = models.TextField(default="")
+    select_category_message = models.TextField(default="")
+    request_help_comment_message = models.TextField(default="")
+    successful_registration_message = models.TextField(default="")
+    save_request_message = models.TextField(default="")
+    request_status_notification_message = models.TextField(default="")
+    getting_help_message = models.TextField(default="")
+    receiving_help_comment_message = models.TextField(default="")
+
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Messages"
+        verbose_name_plural = "Messages"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if AboutPage.objects.count() != 1:
+            self.delete()
+

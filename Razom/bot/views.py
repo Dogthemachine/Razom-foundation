@@ -13,12 +13,9 @@ env = environ.Env()
 environ.Env.read_env()
 bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 
-print("\n\n", "START VIEW", "\n\n")
-
 
 @csrf_exempt
 def BasicBotView(request):
-    print("\n\n", "TEST", "\n\n")
     if request.method == "POST" and request.content_type == "application/json":
         try:
             json_string = request.body.decode("utf-8")

@@ -43,9 +43,6 @@ class Address(models.Model):
     building = models.IntegerField(blank=True, null=True)
     apartment = models.IntegerField(blank=True, null=True)
 
-    def __str__(self):
-        return u"%s" % self.name
-
     class Meta:
         verbose_name = "Address"
         verbose_name_plural = "Address"
@@ -69,9 +66,6 @@ class Volunteers(models.Model):
     phone_number = models.CharField(max_length=70, default="")
     email = models.EmailField(max_length=200, null=True, blank=True)
 
-    def __str__(self):
-        return u"%s" % self.name
-
     class Meta:
         verbose_name = "Volunteers"
         verbose_name_plural = "Volunteers"
@@ -88,9 +82,6 @@ class Requests(models.Model):
     regular = models.BooleanField(default=False)
     status = models.CharField(max_length=70, default="")        #   created / approved / gathered / done / declined
 
-    def __str__(self):
-        return u"%s" % self.name
-
     class Meta:
         verbose_name = "Requests"
         verbose_name_plural = "Requests"
@@ -103,9 +94,6 @@ class Feedbacks(models.Model):
     comment = models.CharField(max_length=2000, default="")
     photo = models.ImageField(upload_to="feedback_images/", blank=True)
     range = models.CharField(max_length=70, default="")
-
-    def __str__(self):
-        return u"%s" % self.name
 
     class Meta:
         verbose_name = "Feedbacks"
@@ -128,9 +116,6 @@ class Messages(models.Model):
     save_request_message = models.TextField(default="")
     request_status_notification_message = models.TextField(default="")
     receiving_help_comment_message = models.TextField(default="")
-
-    def __str__(self):
-        return u"%s" % self.name
 
     class Meta:
         verbose_name = "Messages"

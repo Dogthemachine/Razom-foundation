@@ -21,7 +21,7 @@ class Recipients(models.Model):
 
 
 class Relatives(models.Model):
-    recipient = models.ForeignKey(Recipients, on_delete=models.CASCADE)
+    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=30, default="")
     surname = models.CharField(max_length=30, default="")
     disabilities = disabilities = models.BooleanField(default=False)
@@ -36,7 +36,7 @@ class Relatives(models.Model):
 
 
 class Address(models.Model):
-    recipient = models.ForeignKey(Recipients, on_delete=models.CASCADE)
+    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
     region = models.CharField(max_length=70, default="")
     city = models.CharField(max_length=70, default="")
     street = models.CharField(max_length=100, default="")
@@ -62,23 +62,6 @@ class Categories(models.Model):
         verbose_name_plural = "Categories"
 
 
-class Requests(models.Model):
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
-    priority = models.CharField(max_length=70, default="")      #   high / normal / low
-    added = models.DateTimeField(auto_now_add=True)
-    comment = models.CharField(max_length=2000, default="")
-    photo = models.ImageField(upload_to="requests_images/", blank=True)
-    regular = models.BooleanField(default=False)
-    status = models.CharField(max_length=70, default="")        #   created / approved / gathered / done / declined
-
-    def __str__(self):
-        return u"%s" % self.name
-
-    class Meta:
-        verbose_name = "Requests"
-        verbose_name_plural = "Requests"
-
-
 class Volunteers(models.Model):
     login_name = models.CharField(max_length=30, default="")
     name = models.CharField(max_length=30, default="")
@@ -94,9 +77,29 @@ class Volunteers(models.Model):
         verbose_name_plural = "Volunteers"
 
 
+class Requests(models.Model):
+    category = models.ForeignKey(Categories, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    volunteer = models.ForeignKey(Volunteers, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    priority = models.CharField(max_length=70, default="")      #   high / normal / low
+    added = models.DateTimeField(auto_now_add=True)
+    comment = models.CharField(max_length=2000, default="")
+    photo = models.ImageField(upload_to="requests_images/", blank=True)
+    regular = models.BooleanField(default=False)
+    status = models.CharField(max_length=70, default="")        #   created / approved / gathered / done / declined
+
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Requests"
+        verbose_name_plural = "Requests"
+
+
 class Feedbacks(models.Model):
-    request = models.ForeignKey(Requests, on_delete=models.CASCADE)
-    volunteer = models.ForeignKey(Volunteers, on_delete=models.CASCADE)
+    request = models.ForeignKey(Requests, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    volunteer = models.ForeignKey(Volunteers, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
     comment = models.CharField(max_length=2000, default="")
     photo = models.ImageField(upload_to="feedback_images/", blank=True)
     range = models.CharField(max_length=70, default="")
@@ -115,17 +118,17 @@ class Messages(models.Model):
     choice_message = models.TextField(default="")
     deletion_message = models.TextField(default="")
     call_for_phone_message = models.TextField(default="")
-    call_for_name_surname_fathersname_message = models.TextField(default="")
+    call_for_name_surname_message = models.TextField(default="")
     call_for_bday_message = models.TextField(default="")
     call_for_address_message = models.TextField(default="")
     call_for_email_message = models.TextField(default="")
+    successful_registration_message = models.TextField(default="")
     select_category_message = models.TextField(default="")
     request_help_comment_message = models.TextField(default="")
-    successful_registration_message = models.TextField(default="")
     save_request_message = models.TextField(default="")
     request_status_notification_message = models.TextField(default="")
-    getting_help_message = models.TextField(default="")
     receiving_help_comment_message = models.TextField(default="")
+    select_help_or_my_requests = models.TextField(default="")
 
     def __str__(self):
         return u"%s" % self.name

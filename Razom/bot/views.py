@@ -44,15 +44,6 @@ def telegram_welcome(message):
     bot.send_message(message.chat.id, message_text, reply_markup=keyboard)
 
 
-@bot.message_handler(func=lambda message: True, content_types=["text"])
-def telegram_message(message):
-    if message.text == "Lets print":
-        bot.send_message(message.chat.id, "Now we will print request")
-        bot.send_message(message.chat.id, message.welcome_message)
-        bot.send_message(message.chat.id, "And now message")
-        bot.send_message(message.chat.id, message)
-
-
 @bot.callback_query_handler(func=lambda call: True)
 def handle_button_press(call):
     if call.data == 'registration':

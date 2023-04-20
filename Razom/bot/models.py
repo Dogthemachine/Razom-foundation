@@ -128,7 +128,6 @@ class Messages(models.Model):
     save_request_message = models.TextField(default="")
     request_status_notification_message = models.TextField(default="")
     receiving_help_comment_message = models.TextField(default="")
-    select_help_or_my_requests = models.TextField(default="")
 
     def __str__(self):
         return u"%s" % self.name
@@ -139,6 +138,6 @@ class Messages(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if AboutPage.objects.count() != 1:
+        if Messages.objects.count() != 1:
             self.delete()
 

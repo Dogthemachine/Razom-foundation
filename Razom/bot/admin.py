@@ -71,7 +71,6 @@ class MessagesAdmin(admin.ModelAdmin):
         "save_request_message",
         "request_status_notification_message",
         "receiving_help_comment_message",
-        "select_help_or_my_requests",
     )
 
 

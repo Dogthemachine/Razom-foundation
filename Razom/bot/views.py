@@ -7,7 +7,7 @@ from bot.models import Recipients, Volunteers, Feedbacks, Requests, Categories, 
 
 import environ
 import telebot
-from telebot import types
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from datetime import datetime
 
 env = environ.Env()

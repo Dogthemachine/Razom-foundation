@@ -49,6 +49,11 @@ def telegram_welcome(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
+    
+    print("\n\n\n")
+    print("BEFORE IF")
+    print("\n\n\n")
+
     if call.data == "first_step":
 
         print("\n\n\n")

@@ -54,4 +54,3 @@ def callback_query_handler(call):
         bot.send_message(message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
 
 
-bot.infinity_polling()

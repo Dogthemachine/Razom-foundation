@@ -31,39 +31,20 @@ def BasicBotView(request):
         return HttpResponse(status=403)
 
 
-@bot.message_handler(commands=["help", "start"])
-def telegram_welcome(message):
-
-    print("\n\n\n")
-    print("FIRST")
-    print("\n\n\n")
-
-    button_text = "Продовжити"
-    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='first_step')
-    keyboard = telebot.types.InlineKeyboardMarkup()
-    keyboard.row_width = 2
-    keyboard.add(button)
-
-    bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
-
+def gen_markup():
+    markup = InlineKeyboardMarkup()
+    markup.row_width = 2
+    markup.add(InlineKeyboardButton("Yes", callback_data="cb_yes"),
+                               InlineKeyboardButton("No", callback_data="cb_no"))
+    return markup
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
-    
-    print("\n\n\n")
-    print("BEFORE IF")
-    print("\n\n\n")
+    if call.data == "cb_yes":
+        bot.answer_callback_query(call.id, "Answer is Yes")
+    elif call.data == "cb_no":
+        bot.answer_callback_query(call.id, "Answer is No")
 
-    if call.data == "first_step":
-
-        print("\n\n\n")
-        print("ANSWER")
-        print("\n\n\n")
-        button_text = "Зареєструватись"
-        button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
-        keyboard = telebot.types.InlineKeyboardMarkup()
-        keyboard.add(button)
-
-        bot.answer_callback_query(call.id, answer.call_for_registration_message, reply_markup=keyboard)
-
-
+@bot.message_handler(func=lambda message: True)
+def message_handler(message):
+    bot.send_message(message.chat.id, "Yes/no?", reply_markup=gen_markup())

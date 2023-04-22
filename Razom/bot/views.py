@@ -7,12 +7,14 @@ from bot.models import Recipients, Volunteers, Feedbacks, Requests, Categories, 
 
 import environ
 import telebot
+from telebot import types
 from datetime import datetime
 
 env = environ.Env()
 environ.Env.read_env()
 bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 answer = Messages.objects.all().latest("id")
+
 
 @csrf_exempt
 def BasicBotView(request):
@@ -41,8 +43,8 @@ def telegram_welcome(message):
 
 
 @bot.callback_query_handler(func=lambda call: True)
-def callback_query_handler(update):
-    if update.callback_query.data == 'first_step':
+def callback_query_handler(call):
+    if call.data.callback_data == 'first_step':
 
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
@@ -51,3 +53,5 @@ def callback_query_handler(update):
 
         bot.send_message(message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
 
+
+bot.infinity_polling()

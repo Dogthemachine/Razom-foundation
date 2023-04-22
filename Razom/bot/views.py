@@ -47,7 +47,6 @@ def telegram_welcome(message):
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
 
-@bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
 
     print("\n\n\n")

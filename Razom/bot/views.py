@@ -34,6 +34,10 @@ def BasicBotView(request):
 @bot.message_handler(commands=["help", "start"])
 def telegram_welcome(message):
 
+    print("\n\n\n")
+    print("FIRST")
+    print("\n\n\n")
+
     button_text = "Продовжити"
     button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='first_step')
     keyboard = telebot.types.InlineKeyboardMarkup()
@@ -47,6 +51,9 @@ def telegram_welcome(message):
 def callback_query(call):
     if call.data == "first_step":
 
+        print("\n\n\n")
+        print("ANSWER")
+        print("\n\n\n")
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
         keyboard = telebot.types.InlineKeyboardMarkup()

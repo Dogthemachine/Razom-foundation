@@ -44,7 +44,7 @@ def telegram_welcome(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query_handler(call):
-    if call.data.callback_data == 'first_step':
+    if call.data == 'first_step':
 
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')

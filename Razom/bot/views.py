@@ -16,23 +16,23 @@ bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 answer = Messages.objects.all().latest("id")
 
 
-# @csrf_exempt
-# def BasicBotView(request):
-#     if request.method == "POST" and request.content_type == "application/json":
-#         try:
-#             json_string = request.body.decode("utf-8")
-#             update = telebot.types.Update.de_json(json_string)
-#         except:
-#             return HttpResponse(status=403)
-#         if update.message and update.message.text:
-#             bot.process_new_messages([update.message])
-#         return HttpResponse(status=200)
-#     else:
-#         return HttpResponse(status=403)
+@csrf_exempt
+def BasicBotView(request):
+    if request.method == "POST" and request.content_type == "application/json":
+        try:
+            json_string = request.body.decode("utf-8")
+            update = telebot.types.Update.de_json(json_string)
+        except:
+            return HttpResponse(status=403)
+        if update.message and update.message.text:
+            bot.process_new_messages([update.message])
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=403)
 
 
-@bot.message_handler(commands=["lets_fuck"])
-def telegram_channels(message):
+@bot.message_handler(commands=["letsfuck"])
+def handle_letsfuck_command(message):
     bot.send_message(message.chat.id, "Збочинець!")
 
 
@@ -44,7 +44,7 @@ def telegram_welcome(message):
     print("\n\n\n")
 
     button_text = "Продовжити"
-    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='first_step')
+    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='firststep')
     keyboard = telebot.types.InlineKeyboardMarkup()
     keyboard.row_width = 2
     keyboard.add(button)
@@ -52,11 +52,11 @@ def telegram_welcome(message):
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
 
-@bot.callback_query_handler(func=lambda call: call.data == 'first_step')
+@bot.callback_query_handler(func=lambda call: call.data == 'firststep')
 def handle_button_click(call):
 
     print("\n\n\n")
-    print("INSIDE def callback_query(call):")
+    print("INSIDE def handle_button_click(call):")
     print("\n\n\n")
 
     button_text = "Зареєструватись"

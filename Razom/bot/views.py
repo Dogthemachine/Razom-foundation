@@ -31,6 +31,11 @@ def BasicBotView(request):
         return HttpResponse(status=403)
 
 
+@bot.message_handler(commands=["lets_fuck"])
+def telegram_channels(message):
+    bot.send_message(message.chat.id, "Збочинець!")
+
+
 @bot.message_handler(commands=["help", "start"])
 def telegram_welcome(message):
 
@@ -47,26 +52,19 @@ def telegram_welcome(message):
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
 
-@bot.callback_query_handler(func=lambda call: True)
-def callback_query(call):
+@bot.callback_query_handler(func=lambda call: call.data == 'first_step')
+def handle_button_click(call):
 
     print("\n\n\n")
     print("INSIDE def callback_query(call):")
     print("\n\n\n")
 
-    if call.data == "first_step":
+    button_text = "Зареєструватись"
+    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
+    keyboard = telebot.types.InlineKeyboardMarkup()
+    keyboard.add(button)
 
-        print("\n\n\n")
-        print("CALL")
-        print(call)
-        print("\n\n\n")
-
-        button_text = "Зареєструватись"
-        button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
-        keyboard = telebot.types.InlineKeyboardMarkup()
-        keyboard.add(button)
-
-        bot.answer_callback_query(call.id, answer.call_for_registration_message, reply_markup=keyboard)
+    bot.send_message(call.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])
@@ -74,13 +72,3 @@ def telegram_message(message):
     string = message.text
     string = "Ок, " + string + ", немаю зауважень"
     bot.send_message(message.chat.id, string)
-
-
-@bot.message_handler(commands=["lets_fuck"])
-def telegram_channels(message):
-    bot.send_message(message.chat.id, "Збочинець!")
-
-
-print("\n\n\n")
-print("print in view")
-print("\n\n\n")

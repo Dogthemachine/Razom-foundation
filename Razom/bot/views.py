@@ -35,7 +35,7 @@ def BasicBotView(request):
 def telegram_welcome(message):
 
     print("\n\n\n")
-    print("FIRST")
+    print("INSIDE telegram_welcome")
     print("\n\n\n")
 
     button_text = "Продовжити"
@@ -47,17 +47,37 @@ def telegram_welcome(message):
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
 
+@bot.inline_handler(func=lambda query: True)
+def inline(query):
+    print("\n\n\n")
+    print("INSIDE inline_handler PRINTING query:")
+    print(query)
+    print("\n\n\n")
+
+    button_text = "Test button"
+    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='test_button')
+    keyboard = telebot.types.InlineKeyboardMarkup()
+    keyboard.row_width = 2
+    keyboard.add(button)
+
+    bot.send_message(message.chat.id, "Test message from inline_handler", reply_markup=keyboard)
+
+
+
+@bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
 
     print("\n\n\n")
-    print("BEFORE IF")
+    print("INSIDE def callback_query(call):")
     print("\n\n\n")
 
     if call.data == "first_step":
 
         print("\n\n\n")
-        print("ANSWER")
+        print("CALL")
+        print(call)
         print("\n\n\n")
+
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
         keyboard = telebot.types.InlineKeyboardMarkup()
@@ -65,21 +85,24 @@ def callback_query(call):
 
         bot.answer_callback_query(call.id, answer.call_for_registration_message, reply_markup=keyboard)
 
+    if call.data == "test_button":
+        bot.answer_callback_query(call.id, "test answer")
 
-@bot.inline_handler(func=lambda query: True)
-def inline(query):
-    keyboard = telebot.types.InlineKeyboardMarkup()
-    btn = telebot.types.InlineKeyboardButton(text="Button text", callback_data="inline")
-    keyboard.add(btn)
-    r = telebot.types.InlineQueryResultArticle(
-        id="1",
-        title="Title",
-        input_message_content=telebot.types.InputTextMessageContent(message_text="Test"),
-        reply_markup=keyboard
-    )
-    bot.answer_inline_query(query.id, [r], cache_time=10)
 
-@bot.callback_query_handler(func=lambda call: True)
-def callbacks(call):
-    if call.data == "inline":
-        print(call)
+@telegram_bot.message_handler(func=lambda message: True, content_types=["text"])
+def telegram_message(message):
+    print(message)
+
+
+@telegram_bot.message_handler(commands=["fuck"])
+def telegram_channels(message):
+    print("RECEIVED COMMAND FUCK")
+
+
+
+
+
+
+print("\n\n\n")
+print("print in view")
+print("\n\n\n")

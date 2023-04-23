@@ -47,23 +47,6 @@ def telegram_welcome(message):
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
 
-@bot.inline_handler(func=lambda query: True)
-def inline(query):
-    print("\n\n\n")
-    print("INSIDE inline_handler PRINTING query:")
-    print(query)
-    print("\n\n\n")
-
-    button_text = "Test button"
-    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='test_button')
-    keyboard = telebot.types.InlineKeyboardMarkup()
-    keyboard.row_width = 2
-    keyboard.add(button)
-
-    bot.send_message(message.chat.id, "Test message from inline_handler", reply_markup=keyboard)
-
-
-
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
 
@@ -84,9 +67,6 @@ def callback_query(call):
         keyboard.add(button)
 
         bot.answer_callback_query(call.id, answer.call_for_registration_message, reply_markup=keyboard)
-
-    if call.data == "test_button":
-        bot.answer_callback_query(call.id, "test answer")
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])

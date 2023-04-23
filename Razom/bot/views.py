@@ -91,12 +91,14 @@ def callback_query(call):
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])
 def telegram_message(message):
-    print(message)
+    string = message.text
+    string = "Ок, " + string + ", немаю зауважень"
+    bot.answer_callback_query(call.id, string)
 
 
-@bot.message_handler(commands=["fuck"])
+@bot.message_handler(commands=["lets_fuck!"])
 def telegram_channels(message):
-    print("RECEIVED COMMAND FUCK")
+    bot.answer_callback_query(call.id, "Збочинець!")
 
 
 print("\n\n\n")

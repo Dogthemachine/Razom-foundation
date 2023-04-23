@@ -16,19 +16,19 @@ bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 answer = Messages.objects.all().latest("id")
 
 
-@csrf_exempt
-def BasicBotView(request):
-    if request.method == "POST" and request.content_type == "application/json":
-        try:
-            json_string = request.body.decode("utf-8")
-            update = telebot.types.Update.de_json(json_string)
-        except:
-            return HttpResponse(status=403)
-        if update.message and update.message.text:
-            bot.process_new_messages([update.message])
-        return HttpResponse(status=200)
-    else:
-        return HttpResponse(status=403)
+# @csrf_exempt
+# def BasicBotView(request):
+#     if request.method == "POST" and request.content_type == "application/json":
+#         try:
+#             json_string = request.body.decode("utf-8")
+#             update = telebot.types.Update.de_json(json_string)
+#         except:
+#             return HttpResponse(status=403)
+#         if update.message and update.message.text:
+#             bot.process_new_messages([update.message])
+#         return HttpResponse(status=200)
+#     else:
+#         return HttpResponse(status=403)
 
 
 @bot.message_handler(commands=["lets_fuck"])

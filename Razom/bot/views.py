@@ -96,7 +96,7 @@ def telegram_message(message):
     bot.answer_callback_query(call.id, string)
 
 
-@bot.message_handler(commands=["lets_fuck!"])
+@bot.message_handler(commands=["lets_fuck"])
 def telegram_channels(message):
     bot.answer_callback_query(call.id, "Збочинець!")
 

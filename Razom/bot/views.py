@@ -16,6 +16,13 @@ bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 answer = Messages.objects.all().latest("id")
 
 
+@bot.callback_query_handler(func=lambda call: True)
+def check_callback_data(call):
+
+    print("(@bot.callback_query_handler(func=lambda call: True)")
+    bot.send_message(call.message.chat.id, call.data)
+
+
 @csrf_exempt
 def BasicBotView(request):
     if request.method == "POST" and request.content_type == "application/json":
@@ -46,13 +53,6 @@ def telegram_welcome(message):
     keyboard.add(button)
 
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
-
-
-@bot.callback_query_handler(func=lambda call: True)
-def check_callback_data(call):
-
-    print("(@bot.callback_query_handler(func=lambda call: True)")
-    bot.send_message(call.message.chat.id, call.data)
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])

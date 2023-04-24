@@ -38,7 +38,7 @@ def BasicBotView(request):
             bot.add_callback_query_handler(callback_inline)
 
             print("\n\n\n")
-            print("bot.add_callback_query_handler(callback_inline)")
+            print(update.callback_query)
             print("\n\n\n")
 
 
@@ -48,7 +48,7 @@ def BasicBotView(request):
         return HttpResponse(status=403)
 
 
-@bot.callback_query_handler(func=lambda message: True)
+@bot.callback_query_handler(func=lambda callback_query: True)
 def callback_inline(call):
 
     print("\n\n\n")

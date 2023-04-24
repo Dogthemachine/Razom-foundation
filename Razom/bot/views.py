@@ -38,7 +38,7 @@ def BasicBotView(request):
             bot.add_callback_query_handler(callback_inline)
 
             print("\n\n\n")
-            print(update.callback_query)
+            print(update.callback_query.data)
             print("\n\n\n")
 
 
@@ -49,13 +49,13 @@ def BasicBotView(request):
 
 
 @bot.callback_query_handler(func=lambda callback_query: True)
-def callback_inline(call):
+def callback_inline(callback_query):
 
     print("\n\n\n")
     print("BUTTON")
     print("\n\n\n")
 
-    bot.send_message(call.message.chat.id, call.data)
+    bot.send_message(callback_query.message.chat.id, callback_query.data)
 
 
 @bot.message_handler(commands=["letsfuck"])

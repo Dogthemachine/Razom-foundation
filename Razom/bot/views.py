@@ -19,6 +19,9 @@ answer = Messages.objects.all().latest("id")
 @csrf_exempt
 def BasicBotView(request):
     if request.method == "POST" and request.content_type == "application/json":
+        print("\n\n\n")
+        print("AAHA!")
+        print("\n\n\n")
         try:
             json_string = request.body.decode("utf-8")
             update = telebot.types.Update.de_json(json_string)

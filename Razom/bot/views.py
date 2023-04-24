@@ -48,6 +48,15 @@ def BasicBotView(request):
             print("bot.process_new_messages([update.message])")
             print("\n\n\n")
 
+
+        if update.callback_query:
+
+            print("\n\n\n")
+            print("update.callback_query.data")
+            print("(should be 'first')")
+            print(update.callback_query.data)
+            print("\n\n\n")
+
         print("\n\n\n")
         print("PRINTING update:")
         print(update)

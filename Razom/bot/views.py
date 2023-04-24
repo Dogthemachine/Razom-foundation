@@ -31,7 +31,7 @@ def BasicBotView(request):
 
         if update.callback_query:
 
-            bot.add_callback_query_handler([callback_inline])
+            bot.add_callback_query_handler([update.callback_query])
 
 
         return HttpResponse(status=200)

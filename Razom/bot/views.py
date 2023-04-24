@@ -62,4 +62,4 @@ def telegram_message(message):
     bot.send_message(message.chat.id, string)
 
 
-bot.add_callback_query_handler(check_callback_data)
+bot.add_callback_query_handler(check_callback_dat)

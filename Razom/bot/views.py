@@ -60,3 +60,6 @@ def telegram_message(message):
     string = message.text
     string = "Ок, " + string + ", не маю зауважень"
     bot.send_message(message.chat.id, string)
+
+
+bot.add_callback_query_handler(check_callback_data)

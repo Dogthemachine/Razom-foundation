@@ -30,7 +30,17 @@ def BasicBotView(request):
             bot.process_new_messages([update.message])
 
         if update.callback_query:
+
+            print("\n\n\n")
+            print("if update.callback_query")
+            print("\n\n\n")
+
             bot.add_callback_query_handler(callback_inline)
+
+            print("\n\n\n")
+            print("bot.add_callback_query_handler(callback_inline)")
+            print("\n\n\n")
+
 
         return HttpResponse(status=200)
 

@@ -38,33 +38,35 @@ def handle_letsfuck_command(message):
 
 @bot.message_handler(commands=["help", "start"])
 def telegram_welcome(message):
+    # button_text = "Продовжити"
+    # button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='firststep')
+    # keyboard = telebot.types.InlineKeyboardMarkup()
+    # keyboard.row_width = 2
+    # keyboard.add(button)
+    # bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
-    print("\n\n\n")
-    print("INSIDE telegram_welcome")
-    print("\n\n\n")
-
-    button_text = "Продовжити"
-    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='firststep')
-    keyboard = telebot.types.InlineKeyboardMarkup()
-    keyboard.row_width = 2
+    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2)
+    button = telebot.types.KeyboardButton('Продовжити')
     keyboard.add(button)
 
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
 
-@bot.callback_query_handler(func=lambda call: call.data == 'firststep')
-def handle_button_click(call):
+@bot.callback_query_handler(func=lambda call: True)
+def handle_button_press(call):
 
-    print("\n\n\n")
-    print("INSIDE def handle_button_click(call):")
-    print("\n\n\n")
+    if call.data == 'Продовжити':
+        bot.send_message(call.message.chat.id, "Зараз ми вас зареэструэмо!")
 
-    button_text = "Зареєструватись"
-    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
-    keyboard = telebot.types.InlineKeyboardMarkup()
-    keyboard.add(button)
 
-    bot.send_message(call.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
+
+# @bot.callback_query_handler(func=lambda call: call.data == 'firststep')
+# def handle_button_click(call):
+#     button_text = "Зареєструватись"
+#     button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
+#     keyboard = telebot.types.InlineKeyboardMarkup()
+#     keyboard.add(button)
+#     bot.send_message(call.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])

@@ -40,7 +40,7 @@ def handle_letsfuck_command(message):
 def telegram_welcome(message):
 
     button_text = "Продовжити"
-    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='firststep')
+    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data=1)
     keyboard = telebot.types.InlineKeyboardMarkup()
     keyboard.row_width = 2
     keyboard.add(button)
@@ -48,7 +48,7 @@ def telegram_welcome(message):
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
 
-@bot.callback_query_handler(func=lambda callback: callback.data == 'firststep')
+@bot.callback_query_handler(func=lambda callback: callback.data == 1)
 def check_callback_data(callback):
 
     print("(func=lambda call: call.data == 'firststep')")
@@ -62,4 +62,4 @@ def telegram_message(message):
     bot.send_message(message.chat.id, string)
 
 
-bot.add_callback_query_handler(check_callback_dat)
+bot.add_callback_query_handler(check_callback_data)

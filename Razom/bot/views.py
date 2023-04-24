@@ -62,6 +62,14 @@ def handle_query(call):
     bot.send_message(call.message.chat.id, "(func=lambda call: True)")
 
 
+
+@bot.callback_query_handler(func=lambda call: True)
+def handle_query(call: types.CallbackQuery):
+
+    print("(func=lambda call: True)")
+    bot.send_message(call.message.chat.id, "(call: types.CallbackQuery)")
+
+
 @bot.message_handler(func=lambda message: True, content_types=["text"])
 def telegram_message(message):
     string = message.text

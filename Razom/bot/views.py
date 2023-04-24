@@ -38,35 +38,26 @@ def handle_letsfuck_command(message):
 
 @bot.message_handler(commands=["help", "start"])
 def telegram_welcome(message):
-    # button_text = "Продовжити"
-    # button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='firststep')
-    # keyboard = telebot.types.InlineKeyboardMarkup()
-    # keyboard.row_width = 2
-    # keyboard.add(button)
-    # bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
-    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2)
-    button = telebot.types.KeyboardButton('Продовжити')
+    button_text = "Продовжити"
+    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='firststep')
+    keyboard = telebot.types.InlineKeyboardMarkup()
+    keyboard.row_width = 2
     keyboard.add(button)
 
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
 
+@bot.callback_query_handler(func=lambda call: call.data == 'firststep')
+def callbacks(call):
+
+    bot.send_message(call.message.chat.id, "(func=lambda call: call.data == 'firststep')")
+
+
 @bot.callback_query_handler(func=lambda call: True)
-def handle_button_press(call):
+def handle_query(call):
 
-    if call.data == 'Продовжити':
-        bot.send_message(call.message.chat.id, "Зараз ми вас зареэструэмо!")
-
-
-
-# @bot.callback_query_handler(func=lambda call: call.data == 'firststep')
-# def handle_button_click(call):
-#     button_text = "Зареєструватись"
-#     button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
-#     keyboard = telebot.types.InlineKeyboardMarkup()
-#     keyboard.add(button)
-#     bot.send_message(call.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
+    bot.send_message(call.message.chat.id, "(func=lambda call: True)")
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])

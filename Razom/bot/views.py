@@ -33,7 +33,8 @@ def BasicBotView(request):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
-    
+
+    print("\n\n\n")
     print("(@bot.callback_query_handler(func=lambda call: True)")
     bot.send_message(call.message.chat.id, call.data)
 

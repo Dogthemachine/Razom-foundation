@@ -44,6 +44,11 @@ def BasicBotView(request):
         if update.message and update.message.text:
             bot.process_new_messages([update.message])
 
+        print("\n\n\n")
+        print("PRINTING update.message:")
+        print(update.message)
+        print("\n\n\n")
+
             print("\n\n\n")
             print("bot.process_new_messages([update.message])")
             print("\n\n\n")

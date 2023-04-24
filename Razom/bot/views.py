@@ -70,5 +70,5 @@ def handle_button_click(call):
 @bot.message_handler(func=lambda message: True, content_types=["text"])
 def telegram_message(message):
     string = message.text
-    string = "Ок, " + string + ", немаю зауважень"
+    string = "Ок, " + string + ", не маю зауважень"
     bot.send_message(message.chat.id, string)

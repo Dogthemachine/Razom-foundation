@@ -48,11 +48,11 @@ def telegram_welcome(message):
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
 
-@bot.callback_query_handler(func=lambda callback: True)
-def check_callback_data(callback):
+@bot.callback_query_handler(func=lambda call: True)
+def check_callback_data(call):
 
-    print("(func=lambda call: call.data == 'firststep')")
-    bot.send_message(callback.message.chat.id, callback.data)
+    print("(@bot.callback_query_handler(func=lambda call: True)")
+    bot.send_message(call.message.chat.id, call.data)
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])

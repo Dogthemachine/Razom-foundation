@@ -16,13 +16,6 @@ bot = telebot.TeleBot(settings.TOKEN, threaded=False)
 answer = Messages.objects.all().latest("id")
 
 
-@bot.callback_query_handler(func=lambda call: True)
-def check_callback_data(call):
-
-    print("(@bot.callback_query_handler(func=lambda call: True)")
-    bot.send_message(call.message.chat.id, call.data)
-
-
 @csrf_exempt
 def BasicBotView(request):
     if request.method == "POST" and request.content_type == "application/json":
@@ -38,6 +31,13 @@ def BasicBotView(request):
         return HttpResponse(status=403)
 
 
+@bot.callback_query_handler(func=lambda call: True)
+def callback_inline(call):
+    
+    print("(@bot.callback_query_handler(func=lambda call: True)")
+    bot.send_message(call.message.chat.id, call.data)
+
+
 @bot.message_handler(commands=["letsfuck"])
 def handle_letsfuck_command(message):
     bot.send_message(message.chat.id, "Збочинець!")
@@ -47,7 +47,7 @@ def handle_letsfuck_command(message):
 def telegram_welcome(message):
 
     button_text = "Продовжити"
-    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data=1)
+    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='first')
     keyboard = telebot.types.InlineKeyboardMarkup()
     keyboard.row_width = 2
     keyboard.add(button)

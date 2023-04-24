@@ -49,8 +49,8 @@ def BasicBotView(request):
             print("\n\n\n")
 
         print("\n\n\n")
-        print("PRINTING update.message:")
-        print(update.message)
+        print("PRINTING update:")
+        print(update)
         print("\n\n\n")
 
         print("\n\n\n")

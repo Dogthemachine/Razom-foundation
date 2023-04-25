@@ -40,18 +40,23 @@ def callback_inline(callback_query):
 
     print("\n\n\n")
     print("PRINTING callback_query.data:")
-    print(callback_query)
+    print(callback_query.data)
     print("\n\n\n")
 
+    print("\n\n\n")
+    print("PRINTING callback_query.chat:")
+    print(callback_query.chat)
+    print("\n\n\n")
+
+    print("\n\n\n")
+    print("PRINTING callback_query.chat.id:")
+    print(callback_query.chat.id)
+    print("\n\n\n")
 
     if callback_query.data == "first":
 
         print("\n\n\n")
         print("INSIDE IF LOOP")
-        print("PRINTING callback_query.chat.id:")
-        print(callback_query.chat.id)
-        print("PRINTING call_for_registration_message:")
-        print(answer.call_for_registration_message)
         print("\n\n\n")
 
         button_text = "Зареєструватись"
@@ -60,15 +65,7 @@ def callback_inline(callback_query):
         keyboard.row_width = 2
         keyboard.add(button)
         bot.send_message(callback_query.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
-
-    # if callback_query.data == "register":
-    #     button_text = "Ух!"
-    #     button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='uh!')
-    #     keyboard = telebot.types.InlineKeyboardMarkup()
-    #     keyboard.row_width = 2
-    #     keyboard.add(button)
-    #     bot.send_message(message.chat.id, "Зраз ми вас зареструемо!", reply_markup=keyboard)
-
+        
 
 @bot.message_handler(commands=["letsfuck"])
 def handle_letsfuck_command(message):

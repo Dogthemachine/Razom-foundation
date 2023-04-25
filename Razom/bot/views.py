@@ -14,7 +14,7 @@ from pprint import pprint
 env = environ.Env()
 environ.Env.read_env()
 bot = telebot.TeleBot(settings.TOKEN, threaded=False)
-answer = Messages.objects.all().latest("id")
+# answer = Messages.objects.all().latest("id")
 
 
 @csrf_exempt
@@ -34,21 +34,7 @@ def BasicBotView(request):
 @bot.callback_query_handler(func=lambda callback_query: True)
 def callback_inline(callback_query):
 
-    print("\n\n\n")
-    print("PRINTING callback_query:")
-    print(callback_query)
-    print("\n\n\n")
-
-    print("\n\n\n")
-    print("PRINTING callback_query.data:")
-    print(callback_query.data)
-    print("\n\n\n")
-
     if callback_query.data == "first":
-
-        print("\n\n\n")
-        print("INSIDE IF LOOP")
-        print("\n\n\n")
 
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
@@ -56,20 +42,6 @@ def callback_inline(callback_query):
         keyboard.add(button)
 
         bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
-
-        # bot.send_message(callback_query.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
-
-
-# @bot.callback_query_handler(func=lambda callback_query: True)
-# def callback_inline(callback_query):
-#     if callback_query.data == "first":
-#         button_text = "Зареєструватись"
-#         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='first')
-#         keyboard = telebot.types.InlineKeyboardMarkup()
-#         keyboard.row_width = 2
-#         keyboard.add(button)
-#
-#     bot.send_message(callback_query.message.chat.id, callback_query.data)
 
 
 @bot.message_handler(commands=["letsfuck"])

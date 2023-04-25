@@ -53,7 +53,6 @@ def callback_inline(callback_query):
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
         keyboard = telebot.types.InlineKeyboardMarkup()
-        keyboard.row_width = 2
         keyboard.add(button)
 
         bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
@@ -85,7 +84,6 @@ def telegram_welcome(message):
     button_text = "Продовжити"
     button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='first')
     keyboard = telebot.types.InlineKeyboardMarkup()
-    keyboard.row_width = 2
     keyboard.add(button)
 
     bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)

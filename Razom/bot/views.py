@@ -14,7 +14,7 @@ from pprint import pprint
 env = environ.Env()
 environ.Env.read_env()
 bot = telebot.TeleBot(settings.TOKEN, threaded=False)
-# answer = Messages.objects.all().latest("id")
+answer = Messages.objects.all().latest("id")
 
 
 @csrf_exempt

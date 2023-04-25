@@ -9,6 +9,7 @@ import environ
 import telebot
 from telebot import types
 from datetime import datetime
+from pprint import pprint
 
 env = environ.Env()
 environ.Env.read_env()
@@ -35,22 +36,12 @@ def callback_inline(callback_query):
 
     print("\n\n\n")
     print("PRINTING callback_query:")
-    print(callback_query)
+    pprint(callback_query)
     print("\n\n\n")
 
     print("\n\n\n")
     print("PRINTING callback_query.data:")
-    print(callback_query.data)
-    print("\n\n\n")
-
-    print("\n\n\n")
-    print("PRINTING callback_query.chat:")
-    print(callback_query.chat)
-    print("\n\n\n")
-
-    print("\n\n\n")
-    print("PRINTING callback_query.chat.id:")
-    print(callback_query.chat.id)
+    pprint(callback_query.data)
     print("\n\n\n")
 
     if callback_query.data == "first":
@@ -65,7 +56,7 @@ def callback_inline(callback_query):
         keyboard.row_width = 2
         keyboard.add(button)
         bot.send_message(callback_query.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
-        
+
 
 @bot.message_handler(commands=["letsfuck"])
 def handle_letsfuck_command(message):

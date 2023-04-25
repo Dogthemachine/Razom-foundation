@@ -126,3 +126,50 @@ class Messages(models.Model):
         if Messages.objects.count() != 1:
             self.delete()
 
+
+class Chat(models.Model):
+
+    REGISTRATION_START = 1
+    SETTING_PHONE = 2
+    SETTING_NAME_SURNAME = 3
+    SETTING_DATE_OF_BRTH = 4
+    SETTING_EMAIL = 5
+    REGISTRATION_COMPLETE = 6
+    CHOICE_MESSAGE = 7
+    LIST_OF_REQUESTS = 8
+    REQUEST_WAS_DELETED = 9
+    WELCOME_MESSAGE = 10
+    SELECT_CATEGORY = 11
+    FOOD_CATEGORIES = 12
+    REPAIR_BUDGET = 13
+    LEAVE_REPAIR_PHOTO = 14
+    REQUEST_COMMENT_MESSAGE = 15
+    REQUEST_SAVED = 16
+    SEND_REQUEST_STATUS_MESSAGE = 17
+    SEND_HELP_RECEIVED_MESSAGE = 18
+
+    STATUS = (
+        (REGISTRATION_START, "Starting registration"),
+        (SETTING_PHONE, "Print your phone"),
+        (SETTING_NAME_SURNAME, "Print your firstname and surname"),
+        (SETTING_DATE_OF_BRTH, "Print your date of birthday"),
+        (SETTING_EMAIL, "Print your email, if you have"),
+        (REGISTRATION_COMPLETE, "Registration is complete"),
+        (CHOICE_MESSAGE, "Need help or my requests"),
+        (LIST_OF_REQUESTS, "List of requests"),
+        (REQUEST_WAS_DELETED, "Request was deleted"),
+        (WELCOME_MESSAGE, "Welcome message"),
+        (SELECT_CATEGORY, "Select category"),
+        (FOOD_CATEGORIES, "Food categories"),
+        (REPAIR_BUDGET, "Print repair budget"),
+        (LEAVE_REPAIR_PHOTO, "Upload photo"),
+        (REQUEST_COMMENT_MESSAGE, "Print your comment"),
+        (REQUEST_SAVED, "Request is saved "),
+        (SEND_REQUEST_STATUS_MESSAGE, "Send request status massage"),
+        (SEND_HELP_RECEIVED_MESSAGE, "Send help request message"),
+    )
+
+    chat_id = models.CharField(max_length=64, db_index=True)
+    status = models.PositiveIntegerField("chat status", choices=STATUS, default=REGISTRATION_START)
+    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    volunteer = models.ForeignKey(Volunteers, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)

@@ -6,7 +6,7 @@
         'first_name': 'Pavel',
         'username': None,
         'last_name': 'Danileyko',
-        'language_code': 'en', 
+        'language_code': 'en',
         'can_join_groups': None,
         'can_read_all_group_messages': None,
         'supports_inline_queries': None,

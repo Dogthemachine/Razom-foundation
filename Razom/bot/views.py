@@ -23,21 +23,11 @@ def BasicBotView(request):
         try:
             json_string = request.body.decode("utf-8")
             update = telebot.types.Update.de_json(json_string)
+            bot.process_new_updates([update])
+            return HttpResponse(status=200)
+
         except:
             return HttpResponse(status=403)
-
-        if update.message and update.message.text:
-            bot.process_new_messages([update.message])
-
-        if update.callback_query:
-
-            bot.process_new_messages([update.callback_query])
-
-
-        return HttpResponse(status=200)
-
-    else:
-        return HttpResponse(status=403)
 
 
 @bot.callback_query_handler(func=lambda callback_query: True)

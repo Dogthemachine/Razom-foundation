@@ -36,12 +36,12 @@ def callback_inline(callback_query):
 
     print("\n\n\n")
     print("PRINTING callback_query:")
-    pprint(callback_query)
+    print(callback_query)
     print("\n\n\n")
 
     print("\n\n\n")
     print("PRINTING callback_query.data:")
-    pprint(callback_query.data)
+    print(callback_query.data)
     print("\n\n\n")
 
     if callback_query.data == "first":

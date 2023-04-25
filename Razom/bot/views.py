@@ -34,10 +34,26 @@ def BasicBotView(request):
 def callback_inline(callback_query):
 
     print("\n\n\n")
+    print("PRINTING callback_query:")
     print(callback_query)
     print("\n\n\n")
 
+    print("\n\n\n")
+    print("PRINTING callback_query.data:")
+    print(callback_query)
+    print("\n\n\n")
+
+
     if callback_query.data == "first":
+
+        print("\n\n\n")
+        print("INSIDE IF LOOP")
+        print("PRINTING callback_query.chat.id:")
+        print(callback_query.chat.id)
+        print("PRINTING call_for_registration_message:")
+        print(answer.call_for_registration_message)
+        print("\n\n\n")
+
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
         keyboard = telebot.types.InlineKeyboardMarkup()

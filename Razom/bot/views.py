@@ -41,13 +41,14 @@ def callback_inline(callback_query):
         keyboard.add(button)
         bot.send_message(message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
 
-    if callback_query.data == "register":
-        button_text = "Ух!"
-        button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='uh!')
-        keyboard = telebot.types.InlineKeyboardMarkup()
-        keyboard.row_width = 2
-        keyboard.add(button)
-        bot.send_message(message.chat.id, "Зраз ми вас зареструемо!", reply_markup=keyboard)
+    # if callback_query.data == "register":
+    #     button_text = "Ух!"
+    #     button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='uh!')
+    #     keyboard = telebot.types.InlineKeyboardMarkup()
+    #     keyboard.row_width = 2
+    #     keyboard.add(button)
+    #     bot.send_message(message.chat.id, "Зраз ми вас зареструемо!", reply_markup=keyboard)
+
 
 @bot.message_handler(commands=["letsfuck"])
 def handle_letsfuck_command(message):

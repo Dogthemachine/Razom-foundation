@@ -14,7 +14,7 @@ from pprint import pprint
 env = environ.Env()
 environ.Env.read_env()
 bot = telebot.TeleBot(settings.TOKEN, threaded=False)
-# answer = Messages.objects.all().latest("id")
+answer = Messages.objects.all().latest("id")
 
 
 @csrf_exempt
@@ -91,11 +91,9 @@ def telegram_welcome(message):
         print("\n")
         print("cat created!")
 
-        chat.status = Chat(choises=WELCOME_MESSAGE)
         print("\n")
-        print("cat.status=WELCOME_MESSAGE")
+        print("cat.status")
         print(chat.status)
-        print("\n\n\n")
 
         button_text = "Продовжити"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='first')
@@ -105,6 +103,11 @@ def telegram_welcome(message):
         bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
         chat.save()
+
+        print("\n")
+        print("chat saved")
+        print(chat.status)
+        print("\n\n\n")
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])

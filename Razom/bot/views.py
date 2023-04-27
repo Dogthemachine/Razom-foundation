@@ -53,12 +53,54 @@ def handle_letsfuck_command(message):
 @bot.message_handler(commands=["help", "start"])
 def telegram_welcome(message):
 
-    button_text = "Продовжити"
-    button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='first')
-    keyboard = telebot.types.InlineKeyboardMarkup()
-    keyboard.add(button)
+    try:
+        chat = Chat.objects.get(chat_id=message.chat.id)
 
-    bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
+        print("\n\n\n")
+        print("chat exist!")
+        print("chat.status")
+        print(chat.status)
+        print("\n")
+        print("message.chat")
+        print(message.chat)
+        print("\n\n\n")
+
+        if chat.status == Chat(choises=WELCOME_MESSAGE):
+
+            button_text = "Зареєструватись"
+            button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            keyboard.add(button)
+
+            bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
+
+            chat.status = Chat(choises=REGISTRATION_START)
+            chat.save()
+
+    except:
+        print("\n\n\n")
+        print("chat don't exist!")
+        print("\n")
+
+        chat = Chat(chat_id=message.chat.id)
+
+        print("\n")
+        print("cat created!")
+
+        chat.status = Chat(choises=WELCOME_MESSAGE)
+        print("\n")
+        print("cat.status=WELCOME_MESSAGE")
+        print(chat.status)
+        print("\n\n\n")
+
+        button_text = "Продовжити"
+        button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='first')
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        keyboard.add(button)
+
+        bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
+
+        chat.save()
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])

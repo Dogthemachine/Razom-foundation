@@ -170,6 +170,6 @@ class Chat(models.Model):
     )
 
     chat_id = models.CharField(max_length=64, db_index=True)
-    status = models.PositiveIntegerField("chat status", choices=STATUS, default=REGISTRATION_START)
+    status = models.PositiveIntegerField("chat status", choices=STATUS, default=WELCOME_MESSAGE)
     recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
     volunteer = models.ForeignKey(Volunteers, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)

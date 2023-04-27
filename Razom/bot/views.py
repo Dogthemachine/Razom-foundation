@@ -53,6 +53,10 @@ def handle_letsfuck_command(message):
 @bot.message_handler(commands=["help", "start"])
 def telegram_welcome(message):
 
+    print("\n\n\n")
+    print("we are in the @bot.message_handler(commands=[help, start])")
+    print("\n\n\n")
+
     try:
         chat = Chat.objects.get(chat_id=message.chat.id)
 

@@ -55,10 +55,6 @@ def telegram_welcome(message):
 
     print("\n\n\n")
     print("we are in the @bot.message_handler(commands=[help, start])")
-    print("\n")
-    print("Chat.WELCOME_MESSAGE")
-    print(Chat.WELCOME_MESSAGE)
-    print("\n")
 
     try:
         chat = Chat.objects.get(chat_id=message.chat.id)
@@ -73,6 +69,7 @@ def telegram_welcome(message):
         print("\n\n\n")
 
     except:
+
         print("\n\n\n")
         print("chat don't exist!")
         print("\n")
@@ -128,10 +125,16 @@ def telegram_welcome(message):
         print("chat.save()")
         print("DONE")
 
-    else:
-        print("chat.status =! Chat.WELCOME_MESSAGE")
+    if chat.status == Chat.REGISTRATION_START:
 
+        print("chat.status == Chat.REGISTRATION_START")
+        
+        button_text = "Зареєструватись"
+        button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        keyboard.add(button)
 
+        bot.send_message(message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])

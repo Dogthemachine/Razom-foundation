@@ -55,7 +55,10 @@ def telegram_welcome(message):
 
     print("\n\n\n")
     print("we are in the @bot.message_handler(commands=[help, start])")
-    print("\n\n\n")
+    print("\n")
+    print("Chat(choices=WELCOME_MESSAGE)")
+    print(Chat(choices=WELCOME_MESSAGE))
+    print("\n")
 
     try:
         chat = Chat.objects.get(chat_id=message.chat.id)
@@ -68,18 +71,6 @@ def telegram_welcome(message):
         print("message.chat")
         print(message.chat)
         print("\n\n\n")
-
-        if chat.status == Chat(choises=WELCOME_MESSAGE):
-
-            button_text = "Зареєструватись"
-            button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
-            keyboard = telebot.types.InlineKeyboardMarkup()
-            keyboard.add(button)
-
-            bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
-
-            chat.status = Chat(choises=REGISTRATION_START)
-            chat.save()
 
     except:
         print("\n\n\n")
@@ -104,6 +95,19 @@ def telegram_welcome(message):
 
         chat.save()
         
+    if chat.status == Chat(choices=WELCOME_MESSAGE):
+
+        button_text = "Зареєструватись"
+        button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        keyboard.add(button)
+
+        bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
+
+        chat.status = Chat(choises=REGISTRATION_START)
+        chat.save()
+
+
         print("\n")
         print("chat_id")
         print(chat.chat_id)

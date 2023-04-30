@@ -98,6 +98,11 @@ def telegram_welcome(message):
 
     if chat.status == Chat.WELCOME_MESSAGE:
 
+        print("\n")
+        print("chat.status == Chat.WELCOME_MESSAGE")
+        print("chat.chat_id")
+        print(chat.chat_id)
+
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
         keyboard = telebot.types.InlineKeyboardMarkup()
@@ -105,22 +110,27 @@ def telegram_welcome(message):
 
         bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
 
+        print("\n")
+        print("bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)")
+        print("DONE")
+
         chat.status = Chat.REGISTRATION_START
+
+        print("\n")
+        print("chat.status = Chat.REGISTRATION_START")
+        print("DONE")
+        print("chat.status")
+        print(chat.status)
+
         chat.save()
 
-
         print("\n")
-        print("chat_id")
-        print(chat.chat_id)
+        print("chat.save()")
+        print("DONE")
 
-        print("\n")
-        print("message.chat.id")
-        print(message.chat.id)
+    else:
+        print("chat.status =! Chat.WELCOME_MESSAGE")
 
-        print("\n")
-        print("chat saved")
-        print(chat.status)
-        print("\n\n\n")
 
 
 

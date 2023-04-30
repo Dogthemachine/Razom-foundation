@@ -56,8 +56,8 @@ def telegram_welcome(message):
     print("\n\n\n")
     print("we are in the @bot.message_handler(commands=[help, start])")
     print("\n")
-    print("Chat(choices=WELCOME_MESSAGE)")
-    print(Chat(choices=WELCOME_MESSAGE))
+    print("Chat.WELCOME_MESSAGE")
+    print(Chat.WELCOME_MESSAGE)
     print("\n")
 
     try:
@@ -78,6 +78,7 @@ def telegram_welcome(message):
         print("\n")
 
         chat = Chat(chat_id=message.chat.id)
+        chat.status = Chat.WELCOME_MESSAGE
 
         print("\n")
         print("chat created!")
@@ -94,8 +95,8 @@ def telegram_welcome(message):
         bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
         chat.save()
-        
-    if chat.status == Chat(choices=WELCOME_MESSAGE):
+
+    if chat.status == Chat.WELCOME_MESSAGE:
 
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
@@ -104,7 +105,7 @@ def telegram_welcome(message):
 
         bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
 
-        chat.status = Chat(choises=REGISTRATION_START)
+        chat.status = Chat.REGISTRATION_START
         chat.save()
 
 

@@ -108,7 +108,7 @@ def telegram_welcome(message):
         keyboard = telebot.types.InlineKeyboardMarkup()
         keyboard.add(button)
 
-        bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
+        bot.send_message(message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
 
         print("\n")
         print("bot.send_message(callback_query.message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)")

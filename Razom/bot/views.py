@@ -89,7 +89,7 @@ def telegram_welcome(message):
         chat = Chat(chat_id=message.chat.id)
 
         print("\n")
-        print("cat created!")
+        print("chat created!")
 
         print("\n")
         print("cat.status")
@@ -103,11 +103,20 @@ def telegram_welcome(message):
         bot.send_message(message.chat.id, answer.welcome_message, reply_markup=keyboard)
 
         chat.save()
+        
+        print("\n")
+        print("chat_id")
+        print(chat.chat_id)
+
+        print("\n")
+        print("message.chat.id")
+        print(message.chat.id)
 
         print("\n")
         print("chat saved")
         print(chat.status)
         print("\n\n\n")
+
 
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])

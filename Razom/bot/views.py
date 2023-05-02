@@ -148,7 +148,7 @@ def telegram_message(message):
             reply = "Будь ласка, введіть номер телефону з десяти цифр, без пробілів"
             bot.send_message(message.chat.id, reply)
 
-    if chat.status == Chat.SETTING_PHONE:
+    if chat.status == Chat.SETTING_NAME_SURNAME:
         pattern = re.compile(r'^([A-Z][a-z]*)(\s[A-Z][a-z]*)*$')
         if bool(pattern.match(string)):
             name, surname = string.split()
@@ -220,8 +220,4 @@ def telegram_message(message):
         else:
             reply = "Введіть правильну електронну пошту"
             bot.send_message(message.chat.id, reply)
-
-    else:
-        string = "Ок, " + string + ", не маю зауважень"
-        bot.send_message(message.chat.id, string)
 

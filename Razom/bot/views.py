@@ -112,6 +112,15 @@ def telegram_message(message):
     string = message.text
 
     if chat.status == Chat.SETTING_PHONE:
+
+
+        print("\n\n")
+        print("we are in message_handler in chat.status == Chat.SETTING_PHONE section")
+        print("\n\n")
+        
+
+
+
         pattern = re.compile(r'^\d{10}$')
 
         if pattern.match(string):

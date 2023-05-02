@@ -73,7 +73,7 @@ def callback_inline(callback_query):
         print("we are in callback_query_handler in 'register' section")
         print("\n\n")
 
-        bot.send_message(callback_query.message.chat.id, answer.call_for_phone_message, reply_markup=keyboard)
+        bot.send_message(callback_query.message.chat.id, answer.call_for_phone_message)
         chat.status = Chat.SETTING_PHONE
         chat.save()
 

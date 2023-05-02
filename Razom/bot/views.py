@@ -73,18 +73,15 @@ def telegram_welcome(message):
 
     try:
         chat = Chat.objects.get(chat_id=message.chat.id)
-        try:
-            recipient = Recipients.objects.get(chat_id=message.chat.id)
 
-        except:
-            button_text = "Зареєструватись"
-            button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
-            keyboard = telebot.types.InlineKeyboardMarkup()
-            keyboard.add(button)
+        button_text = "Зареєструватись"
+        button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        keyboard.add(button)
 
-            bot.send_message(message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
-            chat.status = Chat.REGISTRATION_START
-            chat.save()
+        bot.send_message(message.chat.id, answer.call_for_registration_message, reply_markup=keyboard)
+        chat.status = Chat.REGISTRATION_START
+        chat.save()
 
     except:
         chat = Chat(chat_id=message.chat.id)
@@ -117,7 +114,7 @@ def telegram_message(message):
     if chat.status == Chat.SETTING_PHONE:
         pattern = re.compile(r'^\d{10}$')
 
-        if bool(pattern.match(string)):
+        if pattern.match(string):
             recipient = Recipients()
             recipient.chat_id = message.chat.id
             login_name = message.chat.first_name + "_" + message.chat.last_name
@@ -135,7 +132,7 @@ def telegram_message(message):
 
     if chat.status == Chat.SETTING_NAME_SURNAME:
         pattern = re.compile(r'^([A-Z][a-z]*)(\s[A-Z][a-z]*)*$')
-        if bool(pattern.match(string)):
+        if pattern.match(string):
             name, surname = string.split()
 
             try:

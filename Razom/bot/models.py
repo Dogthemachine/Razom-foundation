@@ -8,6 +8,7 @@ class Recipients(models.Model):
     name = models.CharField(max_length=30, default="")
     surname = models.CharField(max_length=30, default="")
     phone_number = models.CharField(max_length=20, default="")
+    address = models.CharField(max_length=300, default="")
     email = models.EmailField(max_length=200, null=True, blank=True)
     date_of_birth = models.DateField(blank=True, null=True)
     disabilities = models.BooleanField(default=False)
@@ -24,7 +25,7 @@ class Relatives(models.Model):
     recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=30, default="")
     surname = models.CharField(max_length=30, default="")
-    disabilities = disabilities = models.BooleanField(default=False)
+    disabilities = models.BooleanField(default=False)
     date_of_birth = models.DateField(blank=True, null=True)
 
     def __str__(self):
@@ -129,24 +130,25 @@ class Messages(models.Model):
 
 class Chat(models.Model):
 
-    REGISTRATION_START = 1
-    SETTING_PHONE = 2
-    SETTING_NAME_SURNAME = 3
-    SETTING_DATE_OF_BRTH = 4
-    SETTING_EMAIL = 5
-    REGISTRATION_COMPLETE = 6
-    CHOICE_MESSAGE = 7
-    LIST_OF_REQUESTS = 8
-    REQUEST_WAS_DELETED = 9
-    WELCOME_MESSAGE = 10
-    SELECT_CATEGORY = 11
-    FOOD_CATEGORIES = 12
-    REPAIR_BUDGET = 13
-    LEAVE_REPAIR_PHOTO = 14
-    REQUEST_COMMENT_MESSAGE = 15
-    REQUEST_SAVED = 16
-    SEND_REQUEST_STATUS_MESSAGE = 17
-    SEND_HELP_RECEIVED_MESSAGE = 18
+    WELCOME_MESSAGE = 1
+    REGISTRATION_START = 2
+    SETTING_PHONE = 3
+    SETTING_NAME_SURNAME = 4
+    SETTING_DATE_OF_BRTH = 5
+    SETTING_ADRESS = 6
+    SETTING_EMAIL = 7
+    REGISTRATION_COMPLETE = 8
+    CHOICE_MESSAGE = 9
+    LIST_OF_REQUESTS = 10
+    REQUEST_WAS_DELETED = 11
+    SELECT_CATEGORY = 12
+    FOOD_CATEGORIES = 13
+    REPAIR_BUDGET = 14
+    LEAVE_REPAIR_PHOTO = 15
+    REQUEST_COMMENT_MESSAGE = 16
+    REQUEST_SAVED = 17
+    SEND_REQUEST_STATUS_MESSAGE = 18
+    SEND_HELP_RECEIVED_MESSAGE = 19
 
     STATUS = (
         (REGISTRATION_START, "Starting registration"),

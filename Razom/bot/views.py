@@ -117,23 +117,59 @@ def telegram_message(message):
         print("\n\n")
         print("we are in message_handler in chat.status == Chat.SETTING_PHONE section")
         print("\n\n")
-        
-
-
 
         pattern = re.compile(r'^\d{10}$')
 
         if pattern.match(string):
+
+            print("\n\n")
+            print("pattern match")
+            print("\n\n")
+
             recipient = Recipients()
+
+            print("\n\n")
+            print("recipient = Recipients() - done")
+            print("\n\n")
+
             recipient.chat_id = message.chat.id
+
+            print("\n\n")
+            print("recipient.chat_id = message.chat.id - done")
+            print("\n\n")
+
             login_name = message.chat.first_name + "_" + message.chat.last_name
+
+            print("\n\n")
+            print("login_name = message.chat.first_name + ... - done")
+            print("\n\n")
+
             recipient.login_name = login_name
+
+            print("\n\n")
+            print("recipient.login_name = login_name - done")
+            print("\n\n")
+
             recipient.save()
+
+            print("\n\n")
+            print("recipient.save() - done")
+            print("\n\n")
+
             chat.recipient = recipient
+
+            print("\n\n")
+            print("chat.recipient = recipient - done")
+            print("\n\n")
 
             bot.send_message(message.chat.id, answer.call_for_name_surname_message)
             chat.status = Chat.SETTING_NAME_SURNAME
             chat.save()
+
+            print("\n\n")
+            print("strings of code 165 166 167 - done")
+            print("\n\n")
+
 
         else:
             reply = "Будь ласка, введіть номер телефону з десяти цифр, без пробілів"

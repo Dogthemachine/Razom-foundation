@@ -36,13 +36,27 @@ def BasicBotView(request):
 def callback_inline(callback_query):
 
     try:
-        chat = Chat.objects.get(chat_id=message.chat.id)
+        chat = Chat.objects.get(chat_id=callback_query.message.chat.id)
+
+        print("\n\n")
+        print("find chat, chat id:")
+        print(chat.chat_id)
+        print("\n\n")
 
     except:
-        chat = Chat(chat_id=message.chat.id)
+        chat = Chat(chat_id=callback_query.message.chat.id)
         chat.status = Chat.WELCOME_MESSAGE
 
+        print("\n\n")
+        print("chat was not found, we created chat")
+        print(chat.chat_id)
+        print("\n\n")
+
     if callback_query.data == "first":
+
+        print("\n\n")
+        print("we are in callback_query_handler in 'first' section")
+        print("\n\n")
 
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
@@ -54,6 +68,10 @@ def callback_inline(callback_query):
         chat.save()
 
     if callback_query.data == "register":
+
+        print("\n\n")
+        print("we are in callback_query_handler in 'register' section")
+        print("\n\n")
 
         bot.send_message(callback_query.message.chat.id, answer.call_for_phone_message, reply_markup=keyboard)
         chat.status = Chat.SETTING_PHONE

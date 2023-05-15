@@ -102,29 +102,31 @@ def telegram_welcome(message):
 # new view -------------------------
 
 
-phone_pattern = re.compile(r'^\d{10}$')
-name_surname_pattern = re.compile(r'^([A-ZАВЄЗІa-zавєзі]*)(\s[A-ZАВЄЗІa-zавєзі]*)*$')
-email_pattern = re.compile(r'^[\w\.-]+@[\w\.-]+\.\w+$')
-
-def get_or_create_chat(chat_id):
-    try:
-        chat = Chat.objects.get(chat_id=chat_id)
-    except Chat.DoesNotExist:
-        chat = Chat.objects.create(chat_id=chat_id, status=Chat.WELCOME_MESSAGE)
-    return chat
-
-def get_or_create_recipient(chat_id):
-    try:
-        recipient = Recipients.objects.get(chat_id=chat_id)
-    except Recipients.DoesNotExist:
-        recipient = Recipients.objects.create(chat_id=chat_id)
-    return recipient
-
-def validate_input(pattern, input_str):
-    return bool(pattern.match(input_str))
 
 @bot.message_handler(func=lambda message: True, content_types=["text"])
 def telegram_message(message):
+    
+    phone_pattern = re.compile(r'^\d{10}$')
+    name_surname_pattern = re.compile(r'^([A-ZАВЄЗІa-zавєзі]*)(\s[A-ZАВЄЗІa-zавєзі]*)*$')
+    email_pattern = re.compile(r'^[\w\.-]+@[\w\.-]+\.\w+$')
+
+    def get_or_create_chat(chat_id):
+        try:
+            chat = Chat.objects.get(chat_id=chat_id)
+        except Chat.DoesNotExist:
+            chat = Chat.objects.create(chat_id=chat_id, status=Chat.WELCOME_MESSAGE)
+        return chat
+
+    def get_or_create_recipient(chat_id):
+        try:
+            recipient = Recipients.objects.get(chat_id=chat_id)
+        except Recipients.DoesNotExist:
+            recipient = Recipients.objects.create(chat_id=chat_id)
+        return recipient
+
+    def validate_input(pattern, input_str):
+        return bool(pattern.match(input_str))
+
     chat = get_or_create_chat(message.chat.id)
     string = message.text
 

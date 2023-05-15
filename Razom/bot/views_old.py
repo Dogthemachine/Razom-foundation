@@ -99,110 +99,116 @@ def telegram_welcome(message):
         chat.save()
 
 
-# new view -------------------------
-
-
-phone_pattern = re.compile(r'^\d{10}$')
-name_surname_pattern = re.compile(r'^([A-ZАВЄЗІa-zавєзі]*)(\s[A-ZАВЄЗІa-zавєзі]*)*$')
-email_pattern = re.compile(r'^[\w\.-]+@[\w\.-]+\.\w+$')
-
-def get_or_create_chat(chat_id):
-    try:
-        chat = Chat.objects.get(chat_id=chat_id)
-    except Chat.DoesNotExist:
-        chat = Chat.objects.create(chat_id=chat_id, status=Chat.WELCOME_MESSAGE)
-    return chat
-
-def get_or_create_recipient(chat_id):
-    try:
-        recipient = Recipients.objects.get(chat_id=chat_id)
-    except Recipients.DoesNotExist:
-        recipient = Recipients.objects.create(chat_id=chat_id)
-    return recipient
-
-def validate_input(pattern, input_str):
-    return bool(pattern.match(input_str))
-
 @bot.message_handler(func=lambda message: True, content_types=["text"])
 def telegram_message(message):
-    chat = get_or_create_chat(message.chat.id)
+
+    try:
+        chat = Chat.objects.get(chat_id=message.chat.id)
+    except:
+
+        chat = Chat(chat_id=message.chat.id)
+        chat.status = Chat.WELCOME_MESSAGE
+
     string = message.text
 
     if chat.status == Chat.SETTING_PHONE:
-        if validate_input(phone_pattern, string):
-            recipient = get_or_create_recipient(message.chat.id)
-            login_name = f"{message.chat.first_name}_{message.chat.last_name}"
+
+        pattern = re.compile(r'^\d{10}$')
+
+        if pattern.match(string):
+
+            recipient = Recipients()
+
+            recipient.chat_id = message.chat.id
+
+            login_name = message.chat.first_name + "_" + message.chat.last_name
+
             recipient.login_name = login_name
+
             recipient.save()
 
             chat.recipient = recipient
+
             bot.send_message(message.chat.id, answer.call_for_name_surname_message)
             chat.status = Chat.SETTING_NAME_SURNAME
-        else:
+            chat.save()
+
+        elif not pattern.match(string):
             reply = "Будь ласка, введіть номер телефону з десяти цифр, без пробілів"
             bot.send_message(message.chat.id, reply)
 
-        chat.save()
+    if chat.status == Chat.SETTING_NAME_SURNAME:
 
-    elif chat.status == Chat.SETTING_NAME_SURNAME:
-        if validate_input(name_surname_pattern, string):
-            recipient = get_or_create_recipient(message.chat.id)
+        pattern = re.compile(r'^([A-ZАВЄЗІa-zавєзі]*)(\s[A-ZАВЄЗІa-zавєзі]*)*$')
+
+        if pattern.match(string):
             name, surname = string.split()
-            recipient.name = name
-            recipient.surname = surname
-            recipient.save()
 
-            bot.send_message(message.chat.id, answer.call_for_bday_message)
-            chat.status = Chat.SETTING_DATE_OF_BRTH
-            chat.save()
+            try:
+                recipient = Recipients.objects.get(chat_id=message.chat.id)
+                recipient.name = name
+                recipient.surname = surname
+                recipient.save()
+
+                bot.send_message(message.chat.id, answer.call_for_bday_message)
+                chat.status = Chat.SETTING_DATE_OF_BRTH
+                chat.save()
+
+            except:
+                reply = "Схоже, ви ще не зареєстровані. Натисніть /start"
+                bot.send_message(message.chat.id, reply)
+
         else:
-            reply = "Введіть ім'я та прізвище двома окремими словами, кожне з великої літери"
+            reply = "Введіть ім'я та прізвище двома окремими словами, кожен з великої літери"
             bot.send_message(message.chat.id, reply)
 
-    elif chat.status == Chat.SETTING_DATE_OF_BRTH:
-        try:
-            # Check if the date format is correct
-            datetime.strptime(string, "%d.%m.%Y")
+    if chat.status == Chat.SETTING_DATE_OF_BRTH:
+        if datetime.strptime(string, "%d.%m.%Y"):
+            try:
+                recipient = Recipients.objects.get(chat_id=message.chat.id)
+                recipient.date_of_birth = string
+                recipient.save()
 
-            recipient = get_or_create_recipient(message.chat.id)
-            recipient.date_of_birth = string
-            recipient.save()
+                bot.send_message(message.chat.id, answer.call_for_address_message)
+                chat.status = Chat.SETTING_ADRESS
+                chat.save()
 
-            bot.send_message(message.chat.id, answer.call_for_address_message)
-            chat.status = Chat.SETTING_ADRESS
-
-        except ValueError:  # Raised if string does not match the date format
+            except:
+                reply = "Схоже, ви ще не зареєстровані. Натисніть /start"
+                bot.send_message(message.chat.id, reply)
+        else:
             reply = "Введіть дату у форматі [дд.мм.рррр]"
             bot.send_message(message.chat.id, reply)
 
-        chat.save()
-
-    elif chat.status == Chat.SETTING_ADRESS:
-
-        recipient = get_or_create_recipient(message.chat.id)
-        recipient.address = string
-        recipient.save()
-
-        bot.send_message(message.chat.id, answer.call_for_email_message)
-        chat.status = Chat.SETTING_EMAIL
-
-        chat.save()
-
-    elif chat.status == Chat.SETTING_EMAIL:
-        if validate_input(email_pattern, string):
-            recipient = get_or_create_recipient(message.chat.id)
-            recipient.email = string
+    if chat.status == Chat.SETTING_ADRESS:
+        try:
+            recipient = Recipients.objects.get(chat_id=message.chat.id)
+            recipient.address = string
             recipient.save()
 
-            bot.send_message(message.chat.id, answer.successful_registration_message)
-            chat.status = Chat.REGISTRATION_COMPLETE
+            bot.send_message(message.chat.id, answer.call_for_email_message)
+            chat.status = Chat.SETTING_EMAIL
+            chat.save()
 
+        except:
+            reply = "Схоже, ви ще не зареєстровані. Натисніть /start"
+            bot.send_message(message.chat.id, reply)
 
+    if chat.status == Chat.SETTING_EMAIL:
+        pattern = re.compile(r'^[\w\.-]+@[\w\.-]+\.\w+$')
+        if pattern.match(string):
+            try:
+                recipient = Recipients.objects.get(chat_id=message.chat.id)
+                recipient.email = string
+                recipient.save()
+
+                bot.send_message(message.chat.id, answer.successful_registration_message)
+                chat.status = Chat.REGISTRATION_COMPLETE
+                chat.save()
+            except:
+                reply = "Схоже, ви ще не зареєстровані. Натисніть /start"
+                bot.send_message(message.chat.id, reply)
         else:
             reply = "Введіть правильну електронну пошту"
             bot.send_message(message.chat.id, reply)
 
-        chat.save()
-
-
-# new view -------------------------

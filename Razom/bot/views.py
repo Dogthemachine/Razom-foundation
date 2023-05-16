@@ -141,26 +141,89 @@ def telegram_message(message):
 
         pattern = re.compile(r'^([A-ZАВЄЗІa-zавєзі]*)(\s[A-ZАВЄЗІa-zавєзі]*)*$')
 
+        print("\n\n\n")
+        print("chat.status == Chat.SETTING_NAME_SURNAME:")
+        print("Users input:")
+        print(string)
+        print("\n\n\n")
+
         if pattern.match(string):
             name, surname = string.split()
 
+            print("\n\n\n")
+            print("if pattern.match(string):")
+            print("\n\n\n")
+
             try:
                 recipient = Recipients.objects.get(chat_id=message.chat.id)
+
+                print("\n\n\n")
+                print("recipient = Recipients.objects.get(chat_id=message.chat.id)")
+                print("\n\n\n")
+
                 recipient.name = name
+
+                print("\n\n\n")
+                print("recipient.name = name")
+                print("\n\n\n")
+
                 recipient.surname = surname
+
+                print("\n\n\n")
+                print("recipient.surname = surname")
+                print("\n\n\n")
+
                 recipient.save()
 
+                print("\n\n\n")
+                print("recipient.save()")
+                print("\n\n\n")
+
                 bot.send_message(message.chat.id, answer.call_for_bday_message)
+
+                print("\n\n\n")
+                print("bot.send_message(message.chat.id, answer.call_for_bday_message)")
+                print("\n\n\n")
+
                 chat.status = Chat.SETTING_DATE_OF_BRTH
+
+                print("\n\n\n")
+                print("chat.status = Chat.SETTING_DATE_OF_BRTH")
+                print("\n\n\n")
+
                 chat.save()
+
+                print("\n\n\n")
+                print("chat.save()")
+                print("\n\n\n")
+
 
             except:
                 reply = "Схоже, ви ще не зареєстровані. Натисніть /start"
+
+                print("\n\n\n")
+                print("Схоже, ви ще не зареєстровані. Натисніть /start")
+                print("\n\n\n")
+
                 bot.send_message(message.chat.id, reply)
+
+                print("\n\n\n")
+                print("bot.send_message(message.chat.id, reply)")
+                print("\n\n\n")
+
 
         else:
             reply = "Введіть ім'я та прізвище двома окремими словами, кожен з великої літери"
+
+            print("\n\n\n")
+            print("Введіть ім'я та прізвище двома окремими словами, кожен з великої літери")
+            print("\n\n\n")
+
             bot.send_message(message.chat.id, reply)
+
+            print("\n\n\n")
+            print("bot.send_message(message.chat.id, reply)")
+            print("\n\n\n")
 
     if chat.status == Chat.SETTING_DATE_OF_BRTH:
         if datetime.strptime(string, "%d.%m.%Y"):

@@ -220,7 +220,7 @@ def telegram_message(message):
 
     elif chat.status == Chat.SETTING_DATE_OF_BRTH:
 
-        pattern = re.compile(r'^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]+\s[А-ЩЬЮЯҐЄІЇа-щьюяґєії]+$')
+        pattern = re.compile(r'^\d{2}\.\d{2}\.\d{4}$')
 
         if pattern.match(string):
             try:
@@ -266,7 +266,7 @@ def telegram_message(message):
             bot.send_message(message.chat.id, answer.successful_registration_message)
             chat.status = Chat.REGISTRATION_COMPLETE
             chat.save()
-        
+
         else:
             reply = "Введіть правильну електронну пошту"
             bot.send_message(message.chat.id, reply)

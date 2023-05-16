@@ -117,7 +117,10 @@ def telegram_message(message):
 
         if pattern.match(string):
 
-            recipient = Recipients()
+            try:
+                recipient = Recipients.objects.get(chat_id=message.chat.id)
+            except:
+                recipient = Recipients()
 
             recipient.chat_id = message.chat.id
 
@@ -135,7 +138,7 @@ def telegram_message(message):
             chat.status = Chat.SETTING_NAME_SURNAME
             chat.save()
 
-        elif not pattern.match(string):
+        else:
             reply = "Будь ласка, введіть номер телефону з десяти цифр, без пробілів"
             bot.send_message(message.chat.id, reply)
 
@@ -159,61 +162,48 @@ def telegram_message(message):
 
             try:
                 recipient = Recipients.objects.get(chat_id=message.chat.id)
-
-                print("\n\n\n")
-                print("recipient = Recipients.objects.get(chat_id=message.chat.id)")
-                print("\n\n\n")
-
-                recipient.name = name
-
-                print("\n\n\n")
-                print("recipient.name = name")
-                print("\n\n\n")
-
-                recipient.surname = surname
-
-                print("\n\n\n")
-                print("recipient.surname = surname")
-                print("\n\n\n")
-
-                recipient.save()
-
-                print("\n\n\n")
-                print("recipient.save()")
-                print("\n\n\n")
-
-                bot.send_message(message.chat.id, answer.call_for_bday_message)
-
-                print("\n\n\n")
-                print("bot.send_message(message.chat.id, answer.call_for_bday_message)")
-                print("\n\n\n")
-
-                chat.status = Chat.SETTING_DATE_OF_BRTH
-
-                print("\n\n\n")
-                print("chat.status = Chat.SETTING_DATE_OF_BRTH")
-                print("\n\n\n")
-
-                chat.save()
-
-                print("\n\n\n")
-                print("chat.save()")
-                print("\n\n\n")
-
-
             except:
-                reply = "Схоже, ви ще не зареєстровані. Натисніть /start"
+                recipient = Recipients()
 
-                print("\n\n\n")
-                print("Схоже, ви ще не зареєстровані. Натисніть /start")
-                print("\n\n\n")
+            print("\n\n\n")
+            print("recipient = Recipients.objects.get(chat_id=message.chat.id)")
+            print("\n\n\n")
 
-                bot.send_message(message.chat.id, reply)
+            recipient.name = name
 
-                print("\n\n\n")
-                print("bot.send_message(message.chat.id, reply)")
-                print("\n\n\n")
+            print("\n\n\n")
+            print("recipient.name = name")
+            print("\n\n\n")
 
+            recipient.surname = surname
+
+            print("\n\n\n")
+            print("recipient.surname = surname")
+            print("\n\n\n")
+
+            recipient.save()
+
+            print("\n\n\n")
+            print("recipient.save()")
+            print("\n\n\n")
+
+            bot.send_message(message.chat.id, answer.call_for_bday_message)
+
+            print("\n\n\n")
+            print("bot.send_message(message.chat.id, answer.call_for_bday_message)")
+            print("\n\n\n")
+
+            chat.status = Chat.SETTING_DATE_OF_BRTH
+
+            print("\n\n\n")
+            print("chat.status = Chat.SETTING_DATE_OF_BRTH")
+            print("\n\n\n")
+
+            chat.save()
+
+            print("\n\n\n")
+            print("chat.save()")
+            print("\n\n\n")
 
         else:
             reply = "Введіть ім'я та прізвище двома окремими словами, кожен з великої літери"
@@ -229,6 +219,7 @@ def telegram_message(message):
             print("\n\n\n")
 
     elif chat.status == Chat.SETTING_DATE_OF_BRTH:
+
         if datetime.strptime(string, "%d.%m.%Y"):
             try:
                 recipient = Recipients.objects.get(chat_id=message.chat.id)

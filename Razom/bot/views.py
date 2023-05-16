@@ -125,6 +125,8 @@ def telegram_message(message):
 
             recipient.login_name = login_name
 
+            recipient.phone_number = string
+
             recipient.save()
 
             chat.recipient = recipient
@@ -137,9 +139,10 @@ def telegram_message(message):
             reply = "Будь ласка, введіть номер телефону з десяти цифр, без пробілів"
             bot.send_message(message.chat.id, reply)
 
-    if chat.status == Chat.SETTING_NAME_SURNAME:
 
-        pattern = re.compile(r'^([A-ZАВЄЗІa-zавєзі]*)(\s[A-ZАВЄЗІa-zавєзі]*)*$')
+    elif chat.status == Chat.SETTING_NAME_SURNAME:
+
+        pattern = re.compile(r'^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]+\s[А-ЩЬЮЯҐЄІЇа-щьюяґєії]+$')
 
         print("\n\n\n")
         print("chat.status == Chat.SETTING_NAME_SURNAME:")
@@ -225,7 +228,7 @@ def telegram_message(message):
             print("bot.send_message(message.chat.id, reply)")
             print("\n\n\n")
 
-    if chat.status == Chat.SETTING_DATE_OF_BRTH:
+    elif chat.status == Chat.SETTING_DATE_OF_BRTH:
         if datetime.strptime(string, "%d.%m.%Y"):
             try:
                 recipient = Recipients.objects.get(chat_id=message.chat.id)
@@ -243,7 +246,7 @@ def telegram_message(message):
             reply = "Введіть дату у форматі [дд.мм.рррр]"
             bot.send_message(message.chat.id, reply)
 
-    if chat.status == Chat.SETTING_ADRESS:
+    elif chat.status == Chat.SETTING_ADRESS:
         try:
             recipient = Recipients.objects.get(chat_id=message.chat.id)
             recipient.address = string
@@ -257,7 +260,7 @@ def telegram_message(message):
             reply = "Схоже, ви ще не зареєстровані. Натисніть /start"
             bot.send_message(message.chat.id, reply)
 
-    if chat.status == Chat.SETTING_EMAIL:
+    elif chat.status == Chat.SETTING_EMAIL:
         pattern = re.compile(r'^[\w\.-]+@[\w\.-]+\.\w+$')
         if pattern.match(string):
             try:

@@ -61,38 +61,21 @@ def callback_inline(callback_query):
 
     if callback_query.data == "help_button":
 
-        print("\n\n\n")
-        print("if callback_query.data == 'help_button':")
-        print("\n\n\n")
-
-
         food_button = "Продукти харчування"
         repair_button = "Ремонт"
         button_1 = telebot.types.InlineKeyboardButton(text=food_button, callback_data='food_button')
         button_2 = telebot.types.InlineKeyboardButton(text=repair_button, callback_data='repair_button')
-
-        print("\n\n\n")
-        print("button_2")
-        print("\n\n\n")
-
         keyboard = telebot.types.InlineKeyboardMarkup()
         keyboard.add(button_1, button_2)
         bot.send_message(callback_query.message.chat.id, answer.select_category_message, reply_markup=keyboard)
-
-        print("\n\n\n")
-        print("bot.send_message(message.chat.id, answer.select_category_message, reply_markup=keyboard)")
-        print("\n\n\n")
-
-
         chat.status = Chat.SELECT_CATEGORY
         chat.save()
 
-        print("\n\n\n")
-        print("chat.save()")
-        print("\n\n\n")
-
-
     if callback_query.data == "food_button":
+
+        print("\n\n\n")
+        print("if callback_query.data == 'food_button':")
+        print("\n\n\n")
 
         grocery_set_button = "Продуктовий набір"
         pet_food_button = "Корм для тварин"
@@ -100,12 +83,25 @@ def callback_inline(callback_query):
         button_1 = telebot.types.InlineKeyboardButton(text=grocery_set_button, callback_data='grocery_set_button')
         button_2 = telebot.types.InlineKeyboardButton(text=pet_food_button, callback_data='pet_food_button')
         button_3 = telebot.types.InlineKeyboardButton(text=baby_food_button, callback_data='baby_food_button')
+
+        print("\n\n\n")
+        print("button_3")
+        print("\n\n\n")
+
         keyboard = telebot.types.InlineKeyboardMarkup()
         keyboard.add(button_1, button_2, button_3)
         bot.send_message(callback_query.message.chat.id, reply_markup=keyboard)
 
+        print("\n\n\n")
+        print("bot.send_message(callback_query.message.chat.id, reply_markup=keyboard)")
+        print("\n\n\n")
+
         chat.status = Chat.FOOD_CATEGORIES
         chat.save()
+
+        print("\n\n\n")
+        print("chat.save()")
+        print("\n\n\n")
 
     # if callback_query.data == "repair_button":
     #

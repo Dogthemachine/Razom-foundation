@@ -146,15 +146,31 @@ def telegram_message(message):
     elif chat.status == Chat.SETTING_NAME_SURNAME:
 
         pattern = re.compile(r'^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]+\s[А-ЩЬЮЯҐЄІЇа-щьюяґєії]+$')
-
-        print("\n\n\n")
-        print("chat.status == Chat.SETTING_NAME_SURNAME:")
-        print("Users input:")
-        print(string)
-        print("\n\n\n")
-
         if pattern.match(string):
             name, surname = string.split()
+
+            try:
+                recipient = Recipients.objects.get(chat_id=message.chat.id)
+            except:
+                recipient = Recipients()
+
+            recipient.name = name
+            recipient.surname = surname
+            recipient.save()
+
+            bot.send_message(message.chat.id, answer.call_for_bday_message)
+            chat.status = Chat.SETTING_DATE_OF_BRTH
+            chat.save()
+
+        else:
+            reply = "Введіть ім'я та прізвище двома окремими словами, кожен з великої літери"
+
+            bot.send_message(message.chat.id, reply)
+
+    elif chat.status == Chat.SETTING_DATE_OF_BRTH:
+
+        pattern = re.compile(r'^\d{2}\.\d{2}\.\d{4}$')
+        if pattern.match(string):
 
             print("\n\n\n")
             print("if pattern.match(string):")
@@ -162,23 +178,22 @@ def telegram_message(message):
 
             try:
                 recipient = Recipients.objects.get(chat_id=message.chat.id)
+
+                print("\n\n\n")
+                print("recipient = Recipients.objects.get(chat_id=message.chat.id)")
+                print("\n\n\n")
+
             except:
                 recipient = Recipients()
 
-            print("\n\n\n")
-            print("recipient = Recipients.objects.get(chat_id=message.chat.id)")
-            print("\n\n\n")
+                print("\n\n\n")
+                print("recipient = Recipients()")
+                print("\n\n\n")
 
-            recipient.name = name
-
-            print("\n\n\n")
-            print("recipient.name = name")
-            print("\n\n\n")
-
-            recipient.surname = surname
+            recipient.date_of_birth = string
 
             print("\n\n\n")
-            print("recipient.surname = surname")
+            print("recipient.date_of_birth = string")
             print("\n\n\n")
 
             recipient.save()
@@ -187,57 +202,23 @@ def telegram_message(message):
             print("recipient.save()")
             print("\n\n\n")
 
-            bot.send_message(message.chat.id, answer.call_for_bday_message)
-
-            print("\n\n\n")
-            print("bot.send_message(message.chat.id, answer.call_for_bday_message)")
-            print("\n\n\n")
-
-            chat.status = Chat.SETTING_DATE_OF_BRTH
-
-            print("\n\n\n")
-            print("chat.status = Chat.SETTING_DATE_OF_BRTH")
-            print("\n\n\n")
-
+            bot.send_message(message.chat.id, answer.call_for_address_message)
+            chat.status = Chat.SETTING_ADRESS
             chat.save()
 
             print("\n\n\n")
             print("chat.save()")
             print("\n\n\n")
 
+
         else:
-            reply = "Введіть ім'я та прізвище двома окремими словами, кожен з великої літери"
-
-            print("\n\n\n")
-            print("Введіть ім'я та прізвище двома окремими словами, кожен з великої літери")
-            print("\n\n\n")
-
+            reply = "Введіть дату у форматі [дд.мм.рррр]"
             bot.send_message(message.chat.id, reply)
 
             print("\n\n\n")
             print("bot.send_message(message.chat.id, reply)")
             print("\n\n\n")
 
-    elif chat.status == Chat.SETTING_DATE_OF_BRTH:
-
-        pattern = re.compile(r'^\d{2}\.\d{2}\.\d{4}$')
-
-        if pattern.match(string):
-            try:
-                recipient = Recipients.objects.get(chat_id=message.chat.id)
-            except:
-                recipient = Recipients()
-
-            recipient.date_of_birth = string
-            recipient.save()
-
-            bot.send_message(message.chat.id, answer.call_for_address_message)
-            chat.status = Chat.SETTING_ADRESS
-            chat.save()
-
-        else:
-            reply = "Введіть дату у форматі [дд.мм.рррр]"
-            bot.send_message(message.chat.id, reply)
 
     elif chat.status == Chat.SETTING_ADRESS:
 

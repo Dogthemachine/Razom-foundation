@@ -105,16 +105,13 @@ def telegram_message(message):
     try:
         chat = Chat.objects.get(chat_id=message.chat.id)
     except:
-
         chat = Chat(chat_id=message.chat.id)
         chat.status = Chat.WELCOME_MESSAGE
 
     string = message.text
-
     if chat.status == Chat.SETTING_PHONE:
 
         pattern = re.compile(r'^\d{10}$')
-
         if pattern.match(string):
 
             try:
@@ -123,17 +120,12 @@ def telegram_message(message):
                 recipient = Recipients()
 
             recipient.chat_id = message.chat.id
-
             login_name = message.chat.first_name + "_" + message.chat.last_name
-
             recipient.login_name = login_name
-
             recipient.phone_number = string
-
             recipient.save()
 
             chat.recipient = recipient
-
             bot.send_message(message.chat.id, answer.call_for_name_surname_message)
             chat.status = Chat.SETTING_NAME_SURNAME
             chat.save()
@@ -172,53 +164,22 @@ def telegram_message(message):
         pattern = re.compile(r'^\d{2}\.\d{2}\.\d{4}$')
         if pattern.match(string):
 
-            print("\n\n\n")
-            print("if pattern.match(string):")
-            print("\n\n\n")
-
             try:
                 recipient = Recipients.objects.get(chat_id=message.chat.id)
-
-                print("\n\n\n")
-                print("recipient = Recipients.objects.get(chat_id=message.chat.id)")
-                print("\n\n\n")
-
             except:
                 recipient = Recipients()
 
-                print("\n\n\n")
-                print("recipient = Recipients()")
-                print("\n\n\n")
-
             date_of_birth = datetime.strptime(string, '%d.%m.%Y').date()
             recipient.date_of_birth = date_of_birth
-
-            print("\n\n\n")
-            print("recipient.date_of_birth = string")
-            print("\n\n\n")
-
             recipient.save()
-
-            print("\n\n\n")
-            print("recipient.save()")
-            print("\n\n\n")
 
             bot.send_message(message.chat.id, answer.call_for_address_message)
             chat.status = Chat.SETTING_ADRESS
             chat.save()
 
-            print("\n\n\n")
-            print("chat.save()")
-            print("\n\n\n")
-
-
         else:
             reply = "Введіть дату у форматі [дд.мм.рррр]"
             bot.send_message(message.chat.id, reply)
-
-            print("\n\n\n")
-            print("bot.send_message(message.chat.id, reply)")
-            print("\n\n\n")
 
 
     elif chat.status == Chat.SETTING_ADRESS:
@@ -245,7 +206,14 @@ def telegram_message(message):
             recipient.email = string
             recipient.save()
 
-            bot.send_message(message.chat.id, answer.successful_registration_message)
+            help_button = "Запит на допомогу"
+            rquests_button = "Мої запити"
+            button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
+            button_2 = telebot.types.InlineKeyboardButton(text=rquests_button, callback_data='rquests_button')
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            keyboard.add(button_1, button_2)
+            bot.send_message(message.chat.id, answer.successful_registration_message, reply_markup=keyboard)
+
             chat.status = Chat.REGISTRATION_COMPLETE
             chat.save()
 

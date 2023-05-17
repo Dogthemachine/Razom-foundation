@@ -190,7 +190,8 @@ def telegram_message(message):
                 print("recipient = Recipients()")
                 print("\n\n\n")
 
-            recipient.date_of_birth = string
+            date_of_birth = datetime.strptime(string, '%d.%m.%Y').date()
+            recipient.date_of_birth = date_of_birth
 
             print("\n\n\n")
             print("recipient.date_of_birth = string")

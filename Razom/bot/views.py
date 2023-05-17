@@ -70,9 +70,14 @@ def callback_inline(callback_query):
         repair_button = "Ремонт"
         button_1 = telebot.types.InlineKeyboardButton(text=food_button, callback_data='food_button')
         button_2 = telebot.types.InlineKeyboardButton(text=repair_button, callback_data='repair_button')
+
+        print("\n\n\n")
+        print("button_2")
+        print("\n\n\n")
+
         keyboard = telebot.types.InlineKeyboardMarkup()
         keyboard.add(button_1, button_2)
-        bot.send_message(message.chat.id, answer.select_category_message, reply_markup=keyboard)
+        bot.send_message(callback_query.message.chat.id, answer.select_category_message, reply_markup=keyboard)
 
         print("\n\n\n")
         print("bot.send_message(message.chat.id, answer.select_category_message, reply_markup=keyboard)")
@@ -97,7 +102,7 @@ def callback_inline(callback_query):
         button_3 = telebot.types.InlineKeyboardButton(text=baby_food_button, callback_data='baby_food_button')
         keyboard = telebot.types.InlineKeyboardMarkup()
         keyboard.add(button_1, button_2, button_3)
-        bot.send_message(message.chat.id, reply_markup=keyboard)
+        bot.send_message(callback_query.message.chat.id, reply_markup=keyboard)
 
         chat.status = Chat.FOOD_CATEGORIES
         chat.save()

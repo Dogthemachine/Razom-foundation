@@ -59,7 +59,33 @@ def callback_inline(callback_query):
         chat.status = Chat.SETTING_PHONE
         chat.save()
 
+    if callback_query.data == "help_button":
 
+        food_button = "Продукти харчування"
+        repair_button = "Ремонт"
+        button_1 = telebot.types.InlineKeyboardButton(text=food_button, callback_data='food_button')
+        button_2 = telebot.types.InlineKeyboardButton(text=repair_button, callback_data='repair_button')
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        keyboard.add(button_1, button_2)
+        bot.send_message(message.chat.id, answer.select_category_message, reply_markup=keyboard)
+
+        chat.status = Chat.SELECT_CATEGORY
+        chat.save()
+
+    if callback_query.data == "food_button":
+
+        grocery_set_button = "Продуктовий набір"
+        pet_food_button = "Корм для тварин"
+        baby_food_button = "Дитяче харчування"
+        button_1 = telebot.types.InlineKeyboardButton(text=grocery_set_button, callback_data='grocery_set_button')
+        button_2 = telebot.types.InlineKeyboardButton(text=pet_food_button, callback_data='pet_food_button')
+        button_3 = telebot.types.InlineKeyboardButton(text=baby_food_button, callback_data='baby_food_button')
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        keyboard.add(button_1, button_2, button_3)
+        bot.send_message(message.chat.id, answer.select_category_message, reply_markup=keyboard)
+
+        chat.status = Chat.SELECT_CATEGORY
+        chat.save()
 
 
 @bot.message_handler(commands=["letsfuck"])
@@ -207,9 +233,9 @@ def telegram_message(message):
             recipient.save()
 
             help_button = "Запит на допомогу"
-            rquests_button = "Мої запити"
+            requests_button = "Мої запити"
             button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
-            button_2 = telebot.types.InlineKeyboardButton(text=rquests_button, callback_data='rquests_button')
+            button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
             keyboard = telebot.types.InlineKeyboardMarkup()
             keyboard.add(button_1, button_2)
             bot.send_message(message.chat.id, answer.successful_registration_message, reply_markup=keyboard)

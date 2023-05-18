@@ -62,7 +62,7 @@ class Categories(models.Model):
 
 class Subcategories(models.Model):
     name = models.CharField(max_length=70, default="")
-    category = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.CASCADE)
+    category = models.ForeignKey(Categories, blank=True, null=True, related_name="+", on_delete=models.CASCADE)
 
     def __str__(self):
         return u"%s" % self.name

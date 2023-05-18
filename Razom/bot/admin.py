@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from bot.models import Recipients, Categories, Requests, Volunteers, Feedbacks, Messages
+from bot.models import Recipients, Categories, Requests, Volunteers, Feedbacks, Messages, Subcategories
 
 
 class RecipientsAdmin(admin.ModelAdmin):

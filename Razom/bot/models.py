@@ -51,6 +51,7 @@ class Address(models.Model):
 
 class Categories(models.Model):
     name = models.CharField(max_length=70, default="")
+    index = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return u"%s" % self.name
@@ -63,6 +64,7 @@ class Categories(models.Model):
 class Subcategories(models.Model):
     name = models.CharField(max_length=70, default="")
     category = models.ForeignKey(Categories, blank=True, null=True, related_name="+", on_delete=models.CASCADE)
+    index = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return u"%s" % self.name

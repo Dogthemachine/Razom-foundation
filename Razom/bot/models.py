@@ -60,6 +60,18 @@ class Categories(models.Model):
         verbose_name_plural = "Categories"
 
 
+class Subcategories(models.Model):
+    name = models.CharField(max_length=70, default="")
+    category = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = "Subcategories"
+        verbose_name_plural = "Subcategories"
+
+
 class Volunteers(models.Model):
     login_name = models.CharField(max_length=30, default="")
     name = models.CharField(max_length=30, default="")
@@ -74,6 +86,7 @@ class Volunteers(models.Model):
 
 class Requests(models.Model):
     category = models.ForeignKey(Categories, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    subcategory = models.ForeignKey(Subcategories, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
     recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
     volunteer = models.ForeignKey(Volunteers, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
     priority = models.CharField(max_length=70, default="")      #   high / normal / low

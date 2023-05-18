@@ -66,7 +66,8 @@ def callback_inline(callback_query):
         button_1 = telebot.types.InlineKeyboardButton(text=food_button, callback_data='food_button')
         button_2 = telebot.types.InlineKeyboardButton(text=repair_button, callback_data='repair_button')
         keyboard = telebot.types.InlineKeyboardMarkup()
-        keyboard.add(button_1, button_2)
+        keyboard.add(button_1)
+        keyboard.add(button_2)
         bot.send_message(callback_query.message.chat.id, answer.select_category_message, reply_markup=keyboard)
         chat.status = Chat.SELECT_CATEGORY
         chat.save()
@@ -80,7 +81,9 @@ def callback_inline(callback_query):
         button_2 = telebot.types.InlineKeyboardButton(text=pet_food_button, callback_data='pet_food_button')
         button_3 = telebot.types.InlineKeyboardButton(text=baby_food_button, callback_data='baby_food_button')
         keyboard = telebot.types.InlineKeyboardMarkup()
-        keyboard.add(button_1, button_2, button_3)
+        keyboard.add(button_1)
+        keyboard.add(button_2)
+        keyboard.add(button_3)
         bot.send_message(callback_query.message.chat.id, "Виберіть категорію:", reply_markup=keyboard)
 
         chat.status = Chat.FOOD_CATEGORIES

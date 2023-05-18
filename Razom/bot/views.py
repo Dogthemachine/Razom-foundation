@@ -73,35 +73,25 @@ def callback_inline(callback_query):
 
     if callback_query.data == "food_button":
 
-        print("\n\n\n")
-        print("if callback_query.data == 'food_button':")
-        print("\n\n\n")
-
         grocery_set_button = "Продуктовий набір"
         pet_food_button = "Корм для тварин"
         baby_food_button = "Дитяче харчування"
         button_1 = telebot.types.InlineKeyboardButton(text=grocery_set_button, callback_data='grocery_set_button')
         button_2 = telebot.types.InlineKeyboardButton(text=pet_food_button, callback_data='pet_food_button')
         button_3 = telebot.types.InlineKeyboardButton(text=baby_food_button, callback_data='baby_food_button')
-
-        print("\n\n\n")
-        print("button_3")
-        print("\n\n\n")
-
         keyboard = telebot.types.InlineKeyboardMarkup()
         keyboard.add(button_1, button_2, button_3)
-        bot.send_message(callback_query.message.chat.id, reply_markup=keyboard)
-
-        print("\n\n\n")
-        print("bot.send_message(callback_query.message.chat.id, reply_markup=keyboard)")
-        print("\n\n\n")
+        bot.send_message(callback_query.message.chat.id, "Виберіть категорію:", reply_markup=keyboard)
 
         chat.status = Chat.FOOD_CATEGORIES
         chat.save()
 
-        print("\n\n\n")
-        print("chat.save()")
-        print("\n\n\n")
+    if callback_query.data == "grocery_set_button" or callback_query.data == "pet_food_button" or callback_query.data == "baby_food_button":
+
+        bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message, reply_markup=keyboard)
+
+        chat.status = Chat.REQUEST_COMMENT_MESSAGE
+        chat.save()
 
     # if callback_query.data == "repair_button":
     #

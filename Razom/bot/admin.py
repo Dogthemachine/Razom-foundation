@@ -20,6 +20,13 @@ class CategoriesAdmin(admin.ModelAdmin):
     )
 
 
+class SubcategoriesAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "category"
+    )
+
+
 class RequestsAdmin(admin.ModelAdmin):
     list_display = (
         "category",
@@ -77,6 +84,8 @@ class MessagesAdmin(admin.ModelAdmin):
 admin.site.register(Recipients, RecipientsAdmin)
 
 admin.site.register(Categories, CategoriesAdmin)
+
+admin.site.register(Subcategories, SubcategoriesAdmin)
 
 admin.site.register(Requests, RequestsAdmin)
 

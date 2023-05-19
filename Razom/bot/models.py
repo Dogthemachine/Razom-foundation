@@ -22,7 +22,7 @@ class Recipients(models.Model):
 
 
 class Relatives(models.Model):
-    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    recipient = models.ForeignKey(Recipients, blank=True, null=True, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=30, default="")
     surname = models.CharField(max_length=30, default="")
     disabilities = models.BooleanField(default=False)
@@ -37,7 +37,7 @@ class Relatives(models.Model):
 
 
 class Address(models.Model):
-    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    recipient = models.ForeignKey(Recipients, blank=True, related_name="+", null=True, on_delete=models.DO_NOTHING)
     region = models.CharField(max_length=70, default="")
     city = models.CharField(max_length=70, default="")
     street = models.CharField(max_length=100, default="")
@@ -63,7 +63,7 @@ class Categories(models.Model):
 
 class Subcategories(models.Model):
     name = models.CharField(max_length=70, default="")
-    category = models.ForeignKey(Categories, blank=True, null=True, related_name="+", on_delete=models.CASCADE)
+    category = models.ForeignKey(Categories, blank=True, null=True, on_delete=models.CASCADE)
     index = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -87,10 +87,10 @@ class Volunteers(models.Model):
 
 
 class Requests(models.Model):
-    category = models.ForeignKey(Categories, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
-    subcategory = models.ForeignKey(Subcategories, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
-    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
-    volunteer = models.ForeignKey(Volunteers, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Categories, blank=True, null=True, on_delete=models.DO_NOTHING)
+    subcategory = models.ForeignKey(Subcategories, blank=True, null=True, on_delete=models.DO_NOTHING)
+    recipient = models.ForeignKey(Recipients, blank=True, null=True, on_delete=models.DO_NOTHING)
+    volunteer = models.ForeignKey(Volunteers, blank=True, null=True, on_delete=models.DO_NOTHING)
     priority = models.CharField(max_length=70, default="")      #   high / normal / low
     added = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=2000, default="")
@@ -104,9 +104,9 @@ class Requests(models.Model):
 
 
 class Feedbacks(models.Model):
-    request = models.ForeignKey(Requests, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
-    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
-    volunteer = models.ForeignKey(Volunteers, blank=True, null=True, related_name="+", on_delete=models.DO_NOTHING)
+    request = models.ForeignKey(Requests, blank=True, null=True, on_delete=models.DO_NOTHING)
+    recipient = models.ForeignKey(Recipients, blank=True, null=True, on_delete=models.DO_NOTHING)
+    volunteer = models.ForeignKey(Volunteers, blank=True, null=True, on_delete=models.DO_NOTHING)
     comment = models.CharField(max_length=2000, default="")
     photo = models.ImageField(upload_to="feedback_images/", blank=True)
     range = models.CharField(max_length=70, default="")
@@ -188,5 +188,6 @@ class Chat(models.Model):
 
     chat_id = models.CharField(max_length=64, db_index=True)
     status = models.PositiveIntegerField("chat status", choices=STATUS, default=WELCOME_MESSAGE)
-    recipient = models.ForeignKey(Recipients, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
-    volunteer = models.ForeignKey(Volunteers, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
+    recipient = models.ForeignKey(Recipients, blank=True, null=True, on_delete=models.SET_NULL)
+    volunteer = models.ForeignKey(Volunteers, blank=True, null=True, on_delete=models.SET_NULL)
+    open_request = models.ForeignKey(Requests, default=None, blank=True, null=True, on_delete=models.SET_NULL)

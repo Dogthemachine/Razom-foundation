@@ -91,7 +91,7 @@ def callback_inline(callback_query):
 
     if callback_query.data == "grocery_set_button" or callback_query.data == "pet_food_button" or callback_query.data == "baby_food_button":
 
-        bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message, reply_markup=keyboard)
+        bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message)
 
         chat.status = Chat.REQUEST_COMMENT_MESSAGE
         chat.save()
@@ -266,7 +266,8 @@ def telegram_message(message):
             button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
             button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
             keyboard = telebot.types.InlineKeyboardMarkup()
-            keyboard.add(button_1, button_2)
+            keyboard.add(button_1)
+            keyboard.add(button_2)
             bot.send_message(message.chat.id, answer.successful_registration_message, reply_markup=keyboard)
 
             chat.status = Chat.REGISTRATION_COMPLETE

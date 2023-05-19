@@ -103,28 +103,101 @@ def callback_inline(callback_query):
         chat.save()
 
     if callback_query.data == "grocery_set_button" or callback_query.data == "pet_food_button" or callback_query.data == "baby_food_button":
+
+        print("\n\n\n")
+        print("if 3 if")
+        print("\n\n\n")
         request = Requests()
+
+        print("\n\n\n")
+        print("request = Requests()")
+        print("\n\n\n")
+
         request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)
+
+        print("\n\n\n")
+        print("request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)")
+        print("\n\n\n")
+
         request.chat_id = callback_query.message.chat.id
+
+        print("\n\n\n")
+        print("request.chat_id = callback_query.message.chat.id")
+        print("\n\n\n")
+
         food_cat = Categories.objects.get(index="1")
+
+        print("\n\n\n")
+        print("food_cat = Categories.objects.get(index=1)")
+        print("\n\n\n")
+
         request.category = food_cat
+
+        print("\n\n\n")
+        print("request.category = food_cat")
+        print("\n\n\n")
+
         if callback_query.data == "grocery_set_button":
             sub_cat = SubCategories.objects.get(index="1")
             request.sub_category = sub_cat
+
+            print("\n\n\n")
+            print("request.sub_category = sub_cat (1)")
+            print("\n\n\n")
+
         elif callback_query.data == "pet_food_button":
             sub_cat = SubCategories.objects.get(index="2")
             request.sub_category = sub_cat
+
+            print("\n\n\n")
+            print("request.sub_category = sub_cat (2)")
+            print("\n\n\n")
+
         elif callback_query.data == "baby_food_button":
             sub_cat = SubCategories.objects.get(index="3")
             request.sub_category = sub_cat
+
+            print("\n\n\n")
+            print("request.sub_category = sub_cat (3)")
+            print("\n\n\n")
+
         request.date = datetime.now()
+
+        print("\n\n\n")
+        print("request.date = datetime.now()")
+        print("\n\n\n")
+
         request.status = "Cтворений"
         request.save()
 
+        print("\n\n\n")
+        print("request.save()")
+        print("\n\n\n")
+
         bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message)
+
+        print("\n\n\n")
+        print("bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message)")
+        print("\n\n\n")
+
         chat.open_request = request
+
+        print("\n\n\n")
+        print("chat.open_request = request")
+        print("\n\n\n")
+
         chat.status = Chat.REQUEST_COMMENT_MESSAGE
+
+        print("\n\n\n")
+        print("chat.status = Chat.REQUEST_COMMENT_MESSAGE")
+        print("\n\n\n")
+
         chat.save()
+
+        print("\n\n\n")
+        print("chat.save()")
+        print("\n\n\n")
+
 
     # if callback_query.data == "repair_button":
     #

@@ -143,7 +143,7 @@ def callback_inline(callback_query):
             print("if callback_query.data == grocery_set_button:")
             print("\n\n\n")
 
-            sub_cat = SubCategories.objects.get(index="1")
+            sub_cat = Subcategories.objects.get(index="1")
 
             print("\n\n\n")
             print("sub_cat = SubCategories.objects.get(index=1)")
@@ -156,7 +156,7 @@ def callback_inline(callback_query):
             print("\n\n\n")
 
         elif callback_query.data == "pet_food_button":
-            sub_cat = SubCategories.objects.get(index="2")
+            sub_cat = Subcategories.objects.get(index="2")
             request.sub_category = sub_cat
 
             print("\n\n\n")
@@ -164,7 +164,7 @@ def callback_inline(callback_query):
             print("\n\n\n")
 
         elif callback_query.data == "baby_food_button":
-            sub_cat = SubCategories.objects.get(index="3")
+            sub_cat = Subcategories.objects.get(index="3")
             request.sub_category = sub_cat
 
             print("\n\n\n")

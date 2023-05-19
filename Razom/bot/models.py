@@ -191,3 +191,5 @@ class Chat(models.Model):
     recipient = models.ForeignKey(Recipients, blank=True, null=True, on_delete=models.SET_NULL)
     volunteer = models.ForeignKey(Volunteers, blank=True, null=True, on_delete=models.SET_NULL)
     open_request = models.ForeignKey(Requests, default=None, blank=True, null=True, on_delete=models.SET_NULL)
+
+    # just a test

@@ -42,6 +42,18 @@ def callback_inline(callback_query):
         chat = Chat(chat_id=callback_query.message.chat.id)
         chat.status = Chat.WELCOME_MESSAGE
 
+    if callback_query.data == "continue":
+
+        help_button = "Запит на допомогу"
+        requests_button = "Мої запити"
+        button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
+        button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        keyboard.add(button_1, button_2)
+        bot.send_message(callback_query.message.chat.id, answer.successful_registration_message, reply_markup=keyboard)
+        chat.status = Chat.REGISTRATION_COMPLETE
+        chat.save()
+
     if callback_query.data == "first":
 
         button_text = "Зареєструватись"
@@ -90,9 +102,26 @@ def callback_inline(callback_query):
         chat.save()
 
     if callback_query.data == "grocery_set_button" or callback_query.data == "pet_food_button" or callback_query.data == "baby_food_button":
+        request = Requests()
+        request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)
+        request.chat_id = callback_query.message.chat.id
+        food_cat = Categories.objects.get(index="1")
+        request.category = food_cat
+        if callback_query.data == "grocery_set_button":
+            sub_cat = SubCategories.objects.get(index="1")
+            request.sub_category = sub_cat
+        elif callback_query.data == "pet_food_button":
+            sub_cat = SubCategories.objects.get(index="2")
+            request.sub_category = sub_cat
+        elif callback_query.data == "baby_food_button":
+            sub_cat = SubCategories.objects.get(index="3")
+            request.sub_category = sub_cat
+        request.date = datetime.now()
+        request.status = "Cтворений"
+        request.save()
 
         bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message)
-
+        chat.open_request = request
         chat.status = Chat.REQUEST_COMMENT_MESSAGE
         chat.save()
 
@@ -102,7 +131,7 @@ def callback_inline(callback_query):
     #         button_1 = telebot.types.InlineKeyboardButton(text=repair_button, callback_data='repair_button')
     #         keyboard = telebot.types.InlineKeyboardMarkup()
     #         keyboard.add(button_1)
-    #         bot.send_message(message.chat.id, reply_markup=keyboard)
+    #         bot.send_message(callback_query.message.chat.id, reply_markup=keyboard)
     #
     #         chat.status = Chat.REPAIR_CATEGORIES
     #         chat.save()
@@ -211,7 +240,6 @@ def telegram_message(message):
 
         else:
             reply = "Введіть ім'я та прізвище двома окремими словами, кожен з великої літери"
-
             bot.send_message(message.chat.id, reply)
 
     elif chat.status == Chat.SETTING_DATE_OF_BRTH:
@@ -277,3 +305,27 @@ def telegram_message(message):
             reply = "Введіть правильну електронну пошту"
             bot.send_message(message.chat.id, reply)
 
+    elif chat.status == Chat.REQUEST_COMMENT_MESSAGE:
+        try:
+            request = chat.open_request
+            request.comment = string
+            request.save()
+
+            button = telebot.types.InlineKeyboardButton(text="Продовжити", callback_data='continue')
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            keyboard.add(button)
+            bot.send_message(message.chat.id, answer.save_request_message, reply_markup=keyboard)
+            chat.status = Chat.REQUEST_SAVED
+            chat.open_request = None
+            chat.save()
+
+        except:
+            help_button = "Запит на допомогу"
+            requests_button = "Мої запити"
+            button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
+            button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            keyboard.add(button_1, button_2)
+            bot.send_message(message.chat.id, answer.successful_registration_message, reply_markup=keyboard)
+            chat.status = Chat.REGISTRATION_COMPLETE
+            chat.save()

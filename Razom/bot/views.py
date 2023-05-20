@@ -102,111 +102,35 @@ def callback_inline(callback_query):
         chat.status = Chat.FOOD_CATEGORIES
         chat.save()
 
+    if callback_query.data == "repair_button":
+
+        bot.send_message(callback_query.message.chat.id, "Вкажіть будь-ласка який бюджет потрібно для ремонтних робіт")
+
+        chat.status = Chat.REPAIR_BUDGET
+        chat.save()
+
     if callback_query.data == "grocery_set_button" or callback_query.data == "pet_food_button" or callback_query.data == "baby_food_button":
-
-        print("\n\n\n")
-        print("if 3 if")
-        print("\n\n\n")
         request = Requests()
-
-        print("\n\n\n")
-        print("request = Requests()")
-        print("\n\n\n")
-
         request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)
-
-        print("\n\n\n")
-        print("request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)")
-        print("\n\n\n")
-
         request.chat_id = callback_query.message.chat.id
-
-        print("\n\n\n")
-        print("request.chat_id = callback_query.message.chat.id")
-        print("\n\n\n")
-
         food_cat = Categories.objects.get(index="1")
-
-        print("\n\n\n")
-        print("food_cat = Categories.objects.get(index=1)")
-        print("\n\n\n")
-
         request.category = food_cat
-
-        print("\n\n\n")
-        print("request.category = food_cat")
-        print("\n\n\n")
-
         if callback_query.data == "grocery_set_button":
-
-            print("\n\n\n")
-            print("if callback_query.data == grocery_set_button:")
-            print("\n\n\n")
-
             sub_cat = Subcategories.objects.get(index="1")
-
-            print("\n\n\n")
-            print("sub_cat = SubCategories.objects.get(index=1)")
-            print("\n\n\n")
-
             request.sub_category = sub_cat
-
-            print("\n\n\n")
-            print("request.sub_category = sub_cat")
-            print("\n\n\n")
-
         elif callback_query.data == "pet_food_button":
             sub_cat = Subcategories.objects.get(index="2")
             request.sub_category = sub_cat
-
-            print("\n\n\n")
-            print("request.sub_category = sub_cat (2)")
-            print("\n\n\n")
-
         elif callback_query.data == "baby_food_button":
             sub_cat = Subcategories.objects.get(index="3")
             request.sub_category = sub_cat
-
-            print("\n\n\n")
-            print("request.sub_category = sub_cat (3)")
-            print("\n\n\n")
-
         request.date = datetime.now()
-
-        print("\n\n\n")
-        print("request.date = datetime.now()")
-        print("\n\n\n")
-
         request.status = "Cтворений"
         request.save()
-
-        print("\n\n\n")
-        print("request.save()")
-        print("\n\n\n")
-
         bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message)
-
-        print("\n\n\n")
-        print("bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message)")
-        print("\n\n\n")
-
         chat.open_request = request
-
-        print("\n\n\n")
-        print("chat.open_request = request")
-        print("\n\n\n")
-
         chat.status = Chat.REQUEST_COMMENT_MESSAGE
-
-        print("\n\n\n")
-        print("chat.status = Chat.REQUEST_COMMENT_MESSAGE")
-        print("\n\n\n")
-
         chat.save()
-
-        print("\n\n\n")
-        print("chat.save()")
-        print("\n\n\n")
 
 
     # if callback_query.data == "repair_button":
@@ -414,3 +338,50 @@ def telegram_message(message):
             bot.send_message(message.chat.id, answer.successful_registration_message, reply_markup=keyboard)
             chat.status = Chat.REGISTRATION_COMPLETE
             chat.save()
+
+    elif chat.status == Chat.REPAIR_BUDGET:
+        try:
+            request = Requests()
+            request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)
+            request.chat_id = callback_query.message.chat.id
+            repair_cat = Categories.objects.get(index="2")
+            request.category = repair_cat
+            request.comment = "Запитана сума на ремонт: " + string
+            request.date = datetime.now()
+            request.status = "Cтворений"
+            request.save()
+
+            bot.send_message(callback_query.message.chat.id, "Тепер будь ласка сфотографуйте те, що потрібно відремонтувати")
+            chat.open_request = request
+            chat.status = Chat.LEAVE_REPAIR_PHOTO
+            chat.save()
+
+        except:
+            help_button = "Запит на допомогу"
+            requests_button = "Мої запити"
+            button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
+            button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            keyboard.add(button_1, button_2)
+            bot.send_message(message.chat.id, answer.successful_registration_message, reply_markup=keyboard)
+            chat.status = Chat.REGISTRATION_COMPLETE
+            chat.save()
+
+
+@bot.message_handler(func=lambda message: True, content_types=["photo"])
+def handle_photo(message):
+    try:
+        chat = Chat.objects.get(chat_id=message.chat.id)
+        request = chat.open_request
+        photo_array = message.photo
+        largest_photo = photo_array[-1]
+        file_id = largest_photo.file_id
+        file_info = bot.get_file(file_id)
+        downloaded_file = bot.download_file(file_info.file_path)
+        file_path = settings.MEDIA_ROOT + "/requests_images/" + datetime.now().strftime("%Y-%m-%d_%H:%M:%S") + ".jpg"
+        with open(file_path, 'wb') as f:
+            f.write(downloaded_file)
+        request.photo = file_path
+        request.save()
+    except:
+        pass

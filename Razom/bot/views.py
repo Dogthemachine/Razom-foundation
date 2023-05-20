@@ -42,71 +42,8 @@ def callback_inline(callback_query):
         chat = Chat(chat_id=callback_query.message.chat.id)
         chat.status = Chat.WELCOME_MESSAGE
 
-    if callback_query.data.startswith('delete'):
-        request_id = call.data.split('_')[2]
-        try:
-            request = Requests.objects.get(id=int(request_id))
-            request.delete()
-            help_button = "Запит на допомогу"
-            requests_button = "Мої запити"
-            button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
-            button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
-            keyboard = telebot.types.InlineKeyboardMarkup()
-            keyboard.add(button_1)
-            keyboard.add(button_2)
-            bot.send_message(callback_query.message.chat.id, answer.deletion_message, reply_markup=keyboard)
-            chat.status = Chat.REQUEST_WAS_DELETED
-            chat.save()
-        except:
-            help_button = "Запит на допомогу"
-            requests_button = "Мої запити"
-            button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
-            button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
-            keyboard = telebot.types.InlineKeyboardMarkup()
-            keyboard.add(button_1)
-            keyboard.add(button_2)
-            bot.send_message(callback_query.message.chat.id, answer.choice_message, reply_markup=keyboard)
-            chat.status = Chat.REGISTRATION_COMPLETE
-            chat.save()
-
-    if callback_query.data.startswith('request'):
-        request_id = call.data.split('_')[1]
-        try:
-            request = Requests.objects.get(id=int(request_id))
-            reply = str(request.added) + "\n"
-            reply += str(request.category) + "\n"
-            reply += str(request.subcategory) + "\n"
-            reply += str(request.comment) + "\n"
-            reply += str(request.status) + "\n"
-            reply += str(request.photo) + "\n"
-
-            keyboard = telebot.types.InlineKeyboardMarkup()
-            btn_del_txt = "Видалити"
-            btn_back_txt = "Назад"
-            btn_back_callbackdata = "continue"
-            btn_del_callbackdata = "delete_request_" + str(request.id)
-            btn_del = telebot.types.InlineKeyboardButton(text=btn_del_txt, callback_data=btn_del_callbackdata)
-            btn_back = telebot.types.InlineKeyboardButton(text=btn_back_txt, callback_data=btn_back_callbackdata)
-            keyboard.add(btn_del)
-            keyboard.add(btn_back)
-            bot.send_message(callback_query.message.chat.id, reply, reply_markup=keyboard)
-            chat.status = Chat.LIST_OF_REQUESTS
-            chat.save()
-        except:
-            help_button = "Запит на допомогу"
-            requests_button = "Мої запити"
-            button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
-            button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
-            keyboard = telebot.types.InlineKeyboardMarkup()
-            keyboard.add(button_1)
-            keyboard.add(button_2)
-            bot.send_message(callback_query.message.chat.id, answer.choice_message, reply_markup=keyboard)
-            chat.status = Chat.REGISTRATION_COMPLETE
-            chat.save()
-
     if callback_query.data == "requests_button":
         try:
-
             print("\n\n\n")
             print("if callback_query.data == requests_button:")
             print("\n\n\n")
@@ -177,7 +114,68 @@ def callback_inline(callback_query):
             print("hat.save()")
             print("\n\n\n")
 
+        except:
+            help_button = "Запит на допомогу"
+            requests_button = "Мої запити"
+            button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
+            button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            keyboard.add(button_1)
+            keyboard.add(button_2)
+            bot.send_message(callback_query.message.chat.id, answer.choice_message, reply_markup=keyboard)
+            chat.status = Chat.REGISTRATION_COMPLETE
+            chat.save()
 
+    if callback_query.data.startswith('delete'):
+        request_id = call.data.split('_')[2]
+        try:
+            request = Requests.objects.get(id=int(request_id))
+            request.delete()
+            help_button = "Запит на допомогу"
+            requests_button = "Мої запити"
+            button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
+            button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            keyboard.add(button_1)
+            keyboard.add(button_2)
+            bot.send_message(callback_query.message.chat.id, answer.deletion_message, reply_markup=keyboard)
+            chat.status = Chat.REQUEST_WAS_DELETED
+            chat.save()
+        except:
+            help_button = "Запит на допомогу"
+            requests_button = "Мої запити"
+            button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
+            button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            keyboard.add(button_1)
+            keyboard.add(button_2)
+            bot.send_message(callback_query.message.chat.id, answer.choice_message, reply_markup=keyboard)
+            chat.status = Chat.REGISTRATION_COMPLETE
+            chat.save()
+
+    if callback_query.data.startswith('request'):
+        request_id = call.data.split('_')[1]
+        try:
+            request = Requests.objects.get(id=int(request_id))
+            reply = str(request.added) + "\n"
+            reply += str(request.category) + "\n"
+            reply += str(request.subcategory) + "\n"
+            reply += str(request.comment) + "\n"
+            reply += str(request.status) + "\n"
+            reply += str(request.photo) + "\n"
+
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            btn_del_txt = "Видалити"
+            btn_back_txt = "Назад"
+            btn_back_callbackdata = "continue"
+            btn_del_callbackdata = "delete_request_" + str(request.id)
+            btn_del = telebot.types.InlineKeyboardButton(text=btn_del_txt, callback_data=btn_del_callbackdata)
+            btn_back = telebot.types.InlineKeyboardButton(text=btn_back_txt, callback_data=btn_back_callbackdata)
+            keyboard.add(btn_del)
+            keyboard.add(btn_back)
+            bot.send_message(callback_query.message.chat.id, reply, reply_markup=keyboard)
+            chat.status = Chat.LIST_OF_REQUESTS
+            chat.save()
         except:
             help_button = "Запит на допомогу"
             requests_button = "Мої запити"

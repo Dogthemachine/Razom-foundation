@@ -44,76 +44,17 @@ def callback_inline(callback_query):
 
     if callback_query.data == "requests_button":
         try:
-            print("\n\n\n")
-            print("if callback_query.data == requests_button:")
-            print("\n\n\n")
-
             recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)
-
-            print("\n\n\n")
-            print("recipient = Recipients.objects.get(chat_id=message.chat.id)")
-            print("\n\n\n")
-
             all_requests = Requests.objects.filter(recipient=recipient)
-
-            print("\n\n\n")
-            print("all_requests = Requests.objects.filter(recipient=recipient)")
-            print("\n\n\n")
-
             keyboard = telebot.types.InlineKeyboardMarkup()
-
-            print("\n\n\n")
-            print("keyboard = telebot.types.InlineKeyboardMarkup()")
-            print("\n\n\n")
-
             for request in all_requests:
-
-                print("\n\n\n")
-                print("for request in all_requests:")
-                print("\n\n\n")
-
                 btn_txt = request.added.strftime("%d.%m.%Y")
-
-                print("\n\n\n")
-                print("btn_txt = request.date.strftime(%d.%m.%Y)")
-                print("\n\n\n")
-
                 callbackdata = "request_" + str(request.id)
-
-                print("\n\n\n")
-                print("callbackdata = request_ + str(request.id)")
-                print("\n\n\n")
-
                 btn = telebot.types.InlineKeyboardButton(text=btn_txt, callback_data=callbackdata)
-
-                print("\n\n\n")
-                print("btn = telebot.types.InlineKeyboardButton(text=btn_txt, callback_data=callbackdata)")
-                print("\n\n\n")
-
                 keyboard.add(btn)
-
-                print("\n\n\n")
-                print("keyboard.add(btn)")
-                print("\n\n\n")
-
             bot.send_message(callback_query.message.chat.id, "Мої запити", reply_markup=keyboard)
-
-            print("\n\n\n")
-            print("bot.send_message(callback_query.message.chat.id, Мої запити, reply_markup=keyboard)")
-            print("\n\n\n")
-
             chat.status = Chat.LIST_OF_REQUESTS
-
-            print("\n\n\n")
-            print("chat.status = Chat.LIST_OF_REQUESTS")
-            print("\n\n\n")
-
             chat.save()
-
-            print("\n\n\n")
-            print("hat.save()")
-            print("\n\n\n")
-
         except:
             help_button = "Запит на допомогу"
             requests_button = "Мої запити"
@@ -154,9 +95,24 @@ def callback_inline(callback_query):
             chat.save()
 
     if callback_query.data.startswith('request'):
+
+        print("\n\n\n")
+        print("if callback_query.data.startswith('request'):")
+        print("\n\n\n")
+
         request_id = call.data.split('_')[1]
+
+        print("\n\n\n")
+        print("request_id = call.data.split('_')[1]      ", request_id)
+        print("\n\n\n")
+
         try:
             request = Requests.objects.get(id=int(request_id))
+
+            print("\n\n\n")
+            print("request = Requests.objects.get(id=int(request_id))")
+            print("\n\n\n")
+
             reply = str(request.added) + "\n"
             reply += str(request.category) + "\n"
             reply += str(request.subcategory) + "\n"
@@ -171,9 +127,19 @@ def callback_inline(callback_query):
             btn_del_callbackdata = "delete_request_" + str(request.id)
             btn_del = telebot.types.InlineKeyboardButton(text=btn_del_txt, callback_data=btn_del_callbackdata)
             btn_back = telebot.types.InlineKeyboardButton(text=btn_back_txt, callback_data=btn_back_callbackdata)
+
+            print("\n\n\n")
+            print("btn_back = telebot.types.InlineKeyboardButton(text=btn_back_txt, callback_data=btn_back_callbackdata)")
+            print("\n\n\n")
+
             keyboard.add(btn_del)
             keyboard.add(btn_back)
             bot.send_message(callback_query.message.chat.id, reply, reply_markup=keyboard)
+
+            print("\n\n\n")
+            print("bot.send_message(callback_query.message.chat.id, reply, reply_markup=keyboard)")
+            print("\n\n\n")
+
             chat.status = Chat.LIST_OF_REQUESTS
             chat.save()
         except:

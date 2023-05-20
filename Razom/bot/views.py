@@ -48,7 +48,7 @@ def callback_inline(callback_query):
             print("if callback_query.data == requests_button:")
             print("\n\n\n")
 
-            recipient = Recipients.objects.get(chat_id=callback_querymessage.chat.id)
+            recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)
 
             print("\n\n\n")
             print("recipient = Recipients.objects.get(chat_id=message.chat.id)")

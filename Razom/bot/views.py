@@ -100,10 +100,10 @@ def callback_inline(callback_query):
         print("if callback_query.data.startswith('request'):")
         print("\n\n\n")
 
-        request_id = call.data.split('_')[1]
+        request_id = callback_query.data.split('_')[1]
 
         print("\n\n\n")
-        print("request_id = call.data.split('_')[1]      ", request_id)
+        print("request_id = callback_query.data.split('_')[1]      ", request_id)
         print("\n\n\n")
 
         try:

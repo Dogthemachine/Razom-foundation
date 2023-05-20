@@ -68,7 +68,7 @@ def callback_inline(callback_query):
             chat.save()
 
     if callback_query.data.startswith('delete'):
-        request_id = call.data.split('_')[2]
+        request_id = callback_query.data.split('_')[2]
         try:
             request = Requests.objects.get(id=int(request_id))
             request.delete()
@@ -95,31 +95,18 @@ def callback_inline(callback_query):
             chat.save()
 
     if callback_query.data.startswith('request'):
-
-        print("\n\n\n")
-        print("if callback_query.data.startswith('request'):")
-        print("\n\n\n")
-
         request_id = callback_query.data.split('_')[1]
-
-        print("\n\n\n")
-        print("request_id = callback_query.data.split('_')[1]      ", request_id)
-        print("\n\n\n")
-
         try:
             request = Requests.objects.get(id=int(request_id))
-
-            print("\n\n\n")
-            print("request = Requests.objects.get(id=int(request_id))")
-            print("\n\n\n")
-
             reply = str(request.added) + "\n"
             reply += str(request.category) + "\n"
             reply += str(request.subcategory) + "\n"
-            reply += str(request.comment) + "\n"
-            reply += str(request.status) + "\n"
-            reply += str(request.photo) + "\n"
-
+            reply += "Коментар: " + str(request.comment) + "\n"
+            reply += "Статус: " + str(request.status) + "\n"
+            if request.volunteer:
+                reply += "Волонтер: " + str(request.volunteer) + "\n"
+            else:
+                reply += "Волонтера ще не обрано" + "\n"
             keyboard = telebot.types.InlineKeyboardMarkup()
             btn_del_txt = "Видалити"
             btn_back_txt = "Назад"
@@ -127,18 +114,9 @@ def callback_inline(callback_query):
             btn_del_callbackdata = "delete_request_" + str(request.id)
             btn_del = telebot.types.InlineKeyboardButton(text=btn_del_txt, callback_data=btn_del_callbackdata)
             btn_back = telebot.types.InlineKeyboardButton(text=btn_back_txt, callback_data=btn_back_callbackdata)
-
-            print("\n\n\n")
-            print("btn_back = telebot.types.InlineKeyboardButton(text=btn_back_txt, callback_data=btn_back_callbackdata)")
-            print("\n\n\n")
-
             keyboard.add(btn_del)
             keyboard.add(btn_back)
             bot.send_message(callback_query.message.chat.id, reply, reply_markup=keyboard)
-
-            print("\n\n\n")
-            print("bot.send_message(callback_query.message.chat.id, reply, reply_markup=keyboard)")
-            print("\n\n\n")
 
             chat.status = Chat.LIST_OF_REQUESTS
             chat.save()
@@ -155,7 +133,6 @@ def callback_inline(callback_query):
             chat.save()
 
     if callback_query.data == "continue":
-
         help_button = "Запит на допомогу"
         requests_button = "Мої запити"
         button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
@@ -168,7 +145,6 @@ def callback_inline(callback_query):
         chat.save()
 
     if callback_query.data == "first":
-
         button_text = "Зареєструватись"
         button = telebot.types.InlineKeyboardButton(text=button_text, callback_data='register')
         keyboard = telebot.types.InlineKeyboardMarkup()
@@ -179,13 +155,11 @@ def callback_inline(callback_query):
         chat.save()
 
     if callback_query.data == "register":
-
         bot.send_message(callback_query.message.chat.id, answer.call_for_phone_message)
         chat.status = Chat.SETTING_PHONE
         chat.save()
 
     if callback_query.data == "help_button":
-
         food_button = "Продукти харчування"
         repair_button = "Ремонт"
         button_1 = telebot.types.InlineKeyboardButton(text=food_button, callback_data='food_button')
@@ -198,7 +172,6 @@ def callback_inline(callback_query):
         chat.save()
 
     if callback_query.data == "food_button":
-
         grocery_set_button = "Продуктовий набір"
         pet_food_button = "Корм для тварин"
         baby_food_button = "Дитяче харчування"
@@ -215,9 +188,7 @@ def callback_inline(callback_query):
         chat.save()
 
     if callback_query.data == "repair_button":
-
         bot.send_message(callback_query.message.chat.id, "Вкажіть будь-ласка який бюджет потрібно для ремонтних робіт")
-
         chat.status = Chat.REPAIR_BUDGET
         chat.save()
 
@@ -229,13 +200,13 @@ def callback_inline(callback_query):
         request.category = food_cat
         if callback_query.data == "grocery_set_button":
             sub_cat = Subcategories.objects.get(index="1")
-            request.sub_category = sub_cat
+            request.subcategory = sub_cat
         elif callback_query.data == "pet_food_button":
             sub_cat = Subcategories.objects.get(index="2")
-            request.sub_category = sub_cat
+            request.subcategory = sub_cat
         elif callback_query.data == "baby_food_button":
             sub_cat = Subcategories.objects.get(index="3")
-            request.sub_category = sub_cat
+            request.subcategory = sub_cat
         request.date = datetime.now()
         request.status = "Cтворений"
         request.save()

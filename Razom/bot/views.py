@@ -72,7 +72,7 @@ def callback_inline(callback_query):
                 print("for request in all_requests:")
                 print("\n\n\n")
 
-                btn_txt = request.date.strftime("%d.%m.%Y")
+                btn_txt = request.added.strftime("%d.%m.%Y")
 
                 print("\n\n\n")
                 print("btn_txt = request.date.strftime(%d.%m.%Y)")

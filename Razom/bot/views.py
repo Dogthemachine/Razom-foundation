@@ -110,7 +110,7 @@ def callback_inline(callback_query):
             keyboard = telebot.types.InlineKeyboardMarkup()
             btn_del_txt = "Видалити"
             btn_back_txt = "Назад"
-            btn_back_callbackdata = "continue"
+            btn_back_callbackdata = "back"
             btn_del_callbackdata = "delete_request_" + str(request.id)
             btn_del = telebot.types.InlineKeyboardButton(text=btn_del_txt, callback_data=btn_del_callbackdata)
             btn_back = telebot.types.InlineKeyboardButton(text=btn_back_txt, callback_data=btn_back_callbackdata)
@@ -141,6 +141,19 @@ def callback_inline(callback_query):
         keyboard.add(button_1)
         keyboard.add(button_2)
         bot.send_message(callback_query.message.chat.id, answer.successful_registration_message, reply_markup=keyboard)
+        chat.status = Chat.REGISTRATION_COMPLETE
+        chat.save()
+
+    if callback_query.data == "back":
+        help_button = "Запит на допомогу"
+        requests_button = "Мої запити"
+        button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
+        button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        keyboard.add(button_1)
+        keyboard.add(button_2)
+        bot.send_message(callback_query.message.chat.id, answer.choice_message,
+                         reply_markup=keyboard)
         chat.status = Chat.REGISTRATION_COMPLETE
         chat.save()
 

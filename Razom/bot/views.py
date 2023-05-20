@@ -348,13 +348,13 @@ def telegram_message(message):
             request = Requests()
 
             print("\n\n\n")
-            print("elif chat.status == Chat.REPAIR_BUDGET:")
+            print("request = Requests()")
             print("\n\n\n")
 
-            request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)
+            request.recipient = Recipients.objects.get(chat_id=message.chat.id)
 
             print("\n\n\n")
-            print("request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)")
+            print("request.recipient = Recipients.objects.get(chat_id=message.chat.id)")
             print("\n\n\n")
 
             request.chat_id = callback_query.message.chat.id

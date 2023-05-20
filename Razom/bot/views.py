@@ -106,17 +106,78 @@ def callback_inline(callback_query):
 
     if callback_query.data == "requests_button":
         try:
+
+            print("\n\n\n")
+            print("if callback_query.data == requests_button:")
+            print("\n\n\n")
+
             recipient = Recipients.objects.get(chat_id=message.chat.id)
+
+            print("\n\n\n")
+            print("recipient = Recipients.objects.get(chat_id=message.chat.id)")
+            print("\n\n\n")
+
             all_requests = Requests.objects.filter(recipient=recipient)
+
+            print("\n\n\n")
+            print("all_requests = Requests.objects.filter(recipient=recipient)")
+            print("\n\n\n")
+
             keyboard = telebot.types.InlineKeyboardMarkup()
+
+            print("\n\n\n")
+            print("keyboard = telebot.types.InlineKeyboardMarkup()")
+            print("\n\n\n")
+
             for request in all_requests:
+
+                print("\n\n\n")
+                print("for request in all_requests:")
+                print("\n\n\n")
+
                 btn_txt = request.date.strftime("%d.%m.%Y")
+
+                print("\n\n\n")
+                print("btn_txt = request.date.strftime(%d.%m.%Y)")
+                print("\n\n\n")
+
                 callbackdata = "request_" + str(request.id)
+
+                print("\n\n\n")
+                print("callbackdata = request_ + str(request.id)")
+                print("\n\n\n")
+
                 btn = telebot.types.InlineKeyboardButton(text=btn_txt, callback_data=callbackdata)
+
+                print("\n\n\n")
+                print("btn = telebot.types.InlineKeyboardButton(text=btn_txt, callback_data=callbackdata)")
+                print("\n\n\n")
+
                 keyboard.add(btn)
+
+                print("\n\n\n")
+                print("keyboard.add(btn)")
+                print("\n\n\n")
+
             bot.send_message(callback_query.message.chat.id, "Мої запити", reply_markup=keyboard)
+
+            print("\n\n\n")
+            print("bot.send_message(callback_query.message.chat.id, Мої запити, reply_markup=keyboard)")
+            print("\n\n\n")
+
             chat.status = Chat.LIST_OF_REQUESTS
+
+            print("\n\n\n")
+            print("chat.status = Chat.LIST_OF_REQUESTS")
+            print("\n\n\n")
+
             chat.save()
+
+            print("\n\n\n")
+            print("hat.save()")
+            print("\n\n\n")
+
+
         except:
             help_button = "Запит на допомогу"
             requests_button = "Мої запити"

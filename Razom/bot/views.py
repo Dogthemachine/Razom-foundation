@@ -341,20 +341,87 @@ def telegram_message(message):
 
     elif chat.status == Chat.REPAIR_BUDGET:
         try:
+            print("\n\n\n")
+            print("elif chat.status == Chat.REPAIR_BUDGET:")
+            print("\n\n\n")
+
             request = Requests()
+
+            print("\n\n\n")
+            print("elif chat.status == Chat.REPAIR_BUDGET:")
+            print("\n\n\n")
+
             request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)
+
+            print("\n\n\n")
+            print("request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)")
+            print("\n\n\n")
+
             request.chat_id = callback_query.message.chat.id
+
+            print("\n\n\n")
+            print("request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)")
+            print("\n\n\n")
+
             repair_cat = Categories.objects.get(index="2")
+
+            print("\n\n\n")
+            print("repair_cat = Categories.objects.get(index=2)")
+            print("\n\n\n")
+
             request.category = repair_cat
+
+            print("\n\n\n")
+            print("request.category = repair_cat")
+            print("\n\n\n")
+
             request.comment = "Запитана сума на ремонт: " + string
+
+            print("\n\n\n")
+            print("request.comment = Запитана сума на ремонт: + string")
+            print("\n\n\n")
+
             request.date = datetime.now()
+
+            print("\n\n\n")
+            print("request.date = datetime.now()")
+            print("\n\n\n")
+
             request.status = "Cтворений"
+
+            print("\n\n\n")
+            print("request.status = Cтворений")
+            print("\n\n\n")
+
             request.save()
 
+            print("\n\n\n")
+            print("request.save()")
+            print("\n\n\n")
+
             bot.send_message(callback_query.message.chat.id, "Тепер будь ласка сфотографуйте те, що потрібно відремонтувати")
+
+            print("\n\n\n")
+            print("bot.send_message(callback_query.message.chat.id, Тепер будь ласка сфотографуйте те, що потрібно відремонтувати)")
+            print("\n\n\n")
+
             chat.open_request = request
+
+            print("\n\n\n")
+            print("chat.open_request = request")
+            print("\n\n\n")
+
             chat.status = Chat.LEAVE_REPAIR_PHOTO
+
+            print("\n\n\n")
+            print("chat.status = Chat.LEAVE_REPAIR_PHOTO")
+            print("\n\n\n")
+
             chat.save()
+
+            print("\n\n\n")
+            print("chat.status = Chat.LEAVE_REPAIR_PHOTO")
+            print("\n\n\n")
 
         except:
             help_button = "Запит на допомогу"

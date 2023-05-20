@@ -357,7 +357,7 @@ def telegram_message(message):
             print("request.recipient = Recipients.objects.get(chat_id=message.chat.id)")
             print("\n\n\n")
 
-            request.chat_id = callback_query.message.chat.id
+            request.chat_id = message.chat.id
 
             print("\n\n\n")
             print("request.recipient = Recipients.objects.get(chat_id=callback_query.message.chat.id)")
@@ -399,7 +399,7 @@ def telegram_message(message):
             print("request.save()")
             print("\n\n\n")
 
-            bot.send_message(callback_query.message.chat.id, "Тепер будь ласка сфотографуйте те, що потрібно відремонтувати")
+            bot.send_message(message.chat.id, "Тепер будь ласка сфотографуйте те, що потрібно відремонтувати")
 
             print("\n\n\n")
             print("bot.send_message(callback_query.message.chat.id, Тепер будь ласка сфотографуйте те, що потрібно відремонтувати)")
@@ -429,7 +429,8 @@ def telegram_message(message):
             button_1 = telebot.types.InlineKeyboardButton(text=help_button, callback_data='help_button')
             button_2 = telebot.types.InlineKeyboardButton(text=requests_button, callback_data='requests_button')
             keyboard = telebot.types.InlineKeyboardMarkup()
-            keyboard.add(button_1, button_2)
+            keyboard.add(button_1)
+            keyboard.add(button_2)
             bot.send_message(message.chat.id, answer.successful_registration_message, reply_markup=keyboard)
             chat.status = Chat.REGISTRATION_COMPLETE
             chat.save()

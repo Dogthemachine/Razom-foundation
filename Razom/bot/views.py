@@ -383,5 +383,10 @@ def handle_photo(message):
             f.write(downloaded_file)
         request.photo = file_path
         request.save()
+
+        bot.send_message(message.chat.id, answer.request_help_comment_message)
+        chat.status = Chat.REQUEST_COMMENT_MESSAGE
+        chat.save()
+
     except:
         pass

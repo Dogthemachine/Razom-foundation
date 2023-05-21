@@ -151,7 +151,7 @@ def callback_inline(callback_query):
         keyboard = telebot.types.InlineKeyboardMarkup()
         keyboard.add(button_1)
         keyboard.add(button_2)
-        bot.send_message(callback_query.message.chat.id, answer.successful_registration_message, reply_markup=keyboard)
+        bot.send_message(callback_query.message.chat.id, answer.choice_message, reply_markup=keyboard)
         chat.status = Chat.REGISTRATION_COMPLETE
         chat.save()
 

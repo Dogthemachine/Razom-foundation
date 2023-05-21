@@ -231,7 +231,7 @@ def callback_inline(callback_query):
         elif callback_query.data == "baby_food_button":
             sub_cat = Subcategories.objects.get(index="3")
             request.subcategory = sub_cat
-        date = datetime.now()
+        date = datetime.now() + timedelta(hours=1)
         request.added = date.strftime("%Y-%m-%d %H:%M:%S")
         request.status = "Cтворений"
         request.save()

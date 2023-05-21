@@ -98,7 +98,7 @@ def callback_inline(callback_query):
         request_id = callback_query.data.split('_')[1]
         try:
             request = Requests.objects.get(id=int(request_id))
-            reply = str(request.added) + "\n"
+            reply = str(request.added.strftime("%Y-%m-%d %H:%M:%S")) + "\n"
             reply += request.recipient.name + " " + request.recipient.surname + "\n"
             if request.category.index == 1:
                 reply += "Продукти харчування" + "\n"

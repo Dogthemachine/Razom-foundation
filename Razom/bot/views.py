@@ -232,8 +232,7 @@ def callback_inline(callback_query):
             sub_cat = Subcategories.objects.get(index="3")
             request.subcategory = sub_cat
         date = datetime.now()
-        date.strftime("%Y-%m-%d %H:%M:%S")
-        request.date = date
+        request.date = date.strftime("%Y-%m-%d %H:%M:%S")
         request.status = "Cтворений"
         request.save()
         bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message)

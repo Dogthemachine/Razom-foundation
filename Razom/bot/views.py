@@ -99,9 +99,20 @@ def callback_inline(callback_query):
         try:
             request = Requests.objects.get(id=int(request_id))
             reply = str(request.added) + "\n"
-            reply += str(request.category) + "\n"
-            reply += str(request.subcategory) + "\n"
-            reply += "Коментар: " + str(request.comment) + "\n"
+            reply += request.recipient.name + " " + request.recipient.surname + "\n"
+            if request.category.index == 1:
+                reply += "Продукти харчування" + "\n"
+            elif request.category.index == 2:
+                reply += "Ремонт" + "\n"
+            if request.subcategory.index == 1:
+                reply += "Продуктовий набір" + "\n"
+            elif request.subcategory.index == 2:
+                reply += "Корм для тварин" + "\n"
+            elif request.subcategory.index == 3:
+                reply += "Дитяче харчування" + "\n"
+            reply += "Телефон: " + str(request.recipient.phone_number) + "\n"
+            reply += "Адреса: " + request.recipient.address + "\n"
+            reply += "Коментар: " + request.comment + "\n"
             reply += "Статус: " + str(request.status) + "\n"
             if request.volunteer:
                 reply += "Волонтер: " + str(request.volunteer) + "\n"
@@ -220,7 +231,9 @@ def callback_inline(callback_query):
         elif callback_query.data == "baby_food_button":
             sub_cat = Subcategories.objects.get(index="3")
             request.subcategory = sub_cat
-        request.date = datetime.now()
+        date = datetime.now()
+        date.strftime("%Y-%m-%d %H:%M:%S")
+        request.date = date
         request.status = "Cтворений"
         request.save()
         bot.send_message(callback_query.message.chat.id, answer.request_help_comment_message)
